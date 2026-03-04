@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Creación de archivos md 4 últimos specs">
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="add">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec001-proc-intento-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec002-proc-intento-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec002-informar-estado-tickect.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec001-informar-estado-tickect.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec003-consultar-registro-de-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec005-consultar-registro-de-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec004-registrar-check-in.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec005-registrar-intento-fallido.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec006-registrar-reingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec004-registrar-reingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec007-registrar-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec003-asignar-puerta-de-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec008-asignar-puerta-de-ingreso.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,14 +22,18 @@
   }
 }</component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="fc9bb08e-bab6-434d-9f96-d04182809497" />
+    <option name="defaultAccountId" value="8c78e112-e563-4104-9c90-e5cc02e6035e" />
   </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/rexyti/20261TicketKeeper.git&quot;,
-    &quot;accountId&quot;: &quot;fc9bb08e-bab6-434d-9f96-d04182809497&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/rexyti/20261TicketKeeper.git",
+    "accountId": "8c78e112-e563-4104-9c90-e5cc02e6035e"
   }
-}</component>
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -52,12 +48,15 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/Modulo2/spec&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -66,6 +65,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -113,6 +113,10 @@
       <workItem from="1771884063946" duration="54000" />
       <workItem from="1771884254635" duration="4283000" />
       <workItem from="1771889911434" duration="708000" />
+      <workItem from="1772054965600" duration="2000" />
+      <workItem from="1772054975024" duration="4000" />
+      <workItem from="1772055059644" duration="473000" />
+      <workItem from="1772656990441" duration="359000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -201,6 +205,7 @@
     <MESSAGE value="creación spec 2" />
     <MESSAGE value="creación spec 4" />
     <MESSAGE value="Creación de archivos md 4 últimos specs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creación de archivos md 4 últimos specs" />
+    <MESSAGE value="add" />
+    <option name="LAST_COMMIT_MESSAGE" value="add" />
   </component>
 </project>
