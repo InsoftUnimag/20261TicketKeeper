@@ -33,7 +33,7 @@ Como encargado de control de acceso, quiero registrar el check-in de un asistent
    - **And** el ticket no ha sido previamente utilizado.
    - **When** El encargado procesa el intento de ingreso.
    - **Then** El sistema registra el check-in como "Exitoso" y actualiza la capacidad del recinto.
-   - **And** devuelve respuesta "Ingreso autorizado"
+   - **And** devuelve respuesta "Ingreso Exitoso"
 ---
 
 ### User Story 2 - Rechazar intento por ticket duplicado (P)riority: P1
