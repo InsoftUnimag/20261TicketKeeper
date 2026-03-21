@@ -1,102 +1,106 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase de Ingeniería de Software - Saludo</title>
-
+    <title>Saint Villain | Almighty :: Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Estilo general para el fondo y el texto */
+        /* Estilos Globales Modo Oscuro */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5; /* Un gris muy suave de fondo */
-            display: flex;
-            justify-content: center; /* Centra horizontalmente */
-            align-items: center;    /* Centra verticalmente */
-            height: 100vh;           /* Usa todo el alto de la pantalla */
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0F0F12; /* Fondo casi negro */
+            color: #FFFFFF; /* Texto blanco */
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-image:
+                radial-gradient(at 10% 10%, rgba(30, 144, 255, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(255, 0, 128, 0.1) 0px, transparent 50%);
         }
 
-        /* Estilo de la "Tarjeta" central */
-        .card {
-            background-color: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra suave para dar profundidad */
+        /* Contenedor Principal (Tarjeta) */
+        .portal-container {
+            background: rgba(25, 25, 30, 0.95); /* Gris oscuro */
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
-            width: 350px;
+            max-width: 450px;
+            width: 100%;
         }
 
-        /* Título */
-        h2 {
-            margin-top: 0;
-            color: #333;
-            font-size: 24px;
+
+        .logo {
+            font-size: 4em;
+            font-weight: 900;
+            letter-spacing: -5px;
+            background: linear-gradient(135deg, #1E90FF 0%, #FF0080 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
 
-        /* Subtítulo o descripción */
-        .description {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+        /* Títulos */
+        h1 { font-weight: 700; margin-bottom: 5px; font-size: 2em; }
+        h3 { font-weight: 400; color: #AAA; margin-top: 0; margin-bottom: 30px; }
 
-        /* Estilo del cuadro de texto (Input) */
+        /* Formulario y Inputs */
+        form { display: flex; flex-direction: column; gap: 15px; }
+
         input[type="text"] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box; /* Para que el padding no agrande el input */
-            font-size: 16px;
-            transition: border-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: border-color 0.3s, background-color 0.3s;
         }
 
-        /* Efecto al hacer clic en el input */
         input[type="text"]:focus {
-            border-color: #4a90e2; /* Azul moderno */
             outline: none;
+            border-color: #1E90FF; /* Azul al enfocar */
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Estilo del botón */
+        /* Botón de Envío */
         button {
-            width: 100%;
-            background-color: #4a90e2; /* Azul moderno */
-            color: white;
-            padding: 14px 20px;
-            margin: 15px 0 0;
+            background: linear-gradient(135deg, #1E90FF 0%, #FF0080 100%);
             border: none;
-            border-radius: 8px;
+            color: #FFFFFF;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* Efecto al pasar el ratón sobre el botón */
         button:hover {
-            background-color: #357abd;
-        }
-
-        /* Efecto al pulsar el botón */
-        button:active {
-            transform: scale(0.98); /* Pequeño efecto de pulsación */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
+<div class="portal-container">
+    <div class="logo">Unimagdalena</div>
+    <h1>Almighty Portal</h1>
+    <h3>Ingresa tu Nombre de Usuario</h3>
 
-<div class="card">
-    <h2>Bienvenido, Ingeniero/a</h2>
-    <p class="description">Por favor, introduce tu nombre para continuar.</p>
-
-    <form action="/saludo-final" method="GET">
-        <input type="text" name="nombreUsuario" placeholder="Escribe tu nombre aquí..." required>
-        <button type="submit">Recibir Saludo 🚀</button>
+    <form action="/saludo-final" method="get">
+        <input type="text" name="nombreUsuario" placeholder="Tu nombre artístico..." required>
+        <button type="submit">Generar Acceso</button>
     </form>
 </div>
-
 </body>
 </html>
