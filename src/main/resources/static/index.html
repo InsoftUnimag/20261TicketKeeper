@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase de Ingeniería de Software - Saludo</title>
+
+    <style>
+        /* Estilo general para el fondo y el texto */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Un gris muy suave de fondo */
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center;    /* Centra verticalmente */
+            height: 100vh;           /* Usa todo el alto de la pantalla */
+            margin: 0;
+        }
+
+        /* Estilo de la "Tarjeta" central */
+        .card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra suave para dar profundidad */
+            text-align: center;
+            width: 350px;
+        }
+
+        /* Título */
+        h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+
+        /* Subtítulo o descripción */
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        /* Estilo del cuadro de texto (Input) */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box; /* Para que el padding no agrande el input */
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        /* Efecto al hacer clic en el input */
+        input[type="text"]:focus {
+            border-color: #4a90e2; /* Azul moderno */
+            outline: none;
+        }
+
+        /* Estilo del botón */
+        button {
+            width: 100%;
+            background-color: #4a90e2; /* Azul moderno */
+            color: white;
+            padding: 14px 20px;
+            margin: 15px 0 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        /* Efecto al pasar el ratón sobre el botón */
+        button:hover {
+            background-color: #357abd;
+        }
+
+        /* Efecto al pulsar el botón */
+        button:active {
+            transform: scale(0.98); /* Pequeño efecto de pulsación */
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Bienvenido, Ingeniero/a</h2>
+    <p class="description">Por favor, introduce tu nombre para continuar.</p>
+
+    <form action="/saludo-final" method="GET">
+        <input type="text" name="nombreUsuario" placeholder="Escribe tu nombre aquí..." required>
+        <button type="submit">Recibir Saludo 🚀</button>
+    </form>
+</div>
+
+</body>
+</html>
