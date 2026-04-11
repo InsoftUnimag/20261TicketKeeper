@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Creación de archivos md 4 últimos specs">
-      <change afterPath="$PROJECT_DIR$/docs/plan/plan-template.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec-template.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec-template.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec001-informar-estado-tickect.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec001-informar-estado-tickect.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec002-proc-intento-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec002-proc-intento-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec003-asignar-puerta-de-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec003-asignar-puerta-de-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec004-registrar-reingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec004-registrar-reingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec005-consultar-registro-de-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec005-consultar-registro-de-ingreso.md" afterDir="false" />
-    </list>
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="feature creacion plan prueba" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,7 +156,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771886337402</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feature creacion plan prueba">
+      <option name="closed" value="true" />
+      <created>1775918793399</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1775918793399</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,6 +203,7 @@
     <MESSAGE value="creación spec 2" />
     <MESSAGE value="creación spec 4" />
     <MESSAGE value="Creación de archivos md 4 últimos specs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creación de archivos md 4 últimos specs" />
+    <MESSAGE value="feature creacion plan prueba" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature creacion plan prueba" />
   </component>
 </project>
