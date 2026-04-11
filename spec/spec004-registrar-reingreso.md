@@ -81,10 +81,70 @@ Configurar límite de 2 re-ingresos. Al tercer intento, el sistema debe rechazar
 
 ---
 
+### User Story 4 – Mostrar límite de reingresos (Priority: P2)
+
+Como encargado de control de acceso quiero visualizar si el ticket ha alcanzado el límite de reingresos permitidos para evitar accesos indebidos al evento.
+
+**Why this priority**:
+
+Permite controlar el uso indebido de tickets duplicados cuando los eventos permiten reingreso.
+
+**Independent Test**:
+
+Cuando un ticket intenta ingresar nuevamente, el sistema verifica el número de reingresos registrados.
+
+**Acceptance Scenario**
+
+1. **Scenario**: Mostrar contador de reingresos
+   - **Given** un ticket con reingresos previos
+   - **When** el encargado escanea el ticket
+   - **Then** el sistema muestra:
+          Reingresos usados: 1
+          Límite permitido: 2
+
+---
+
+### User Story 5 - Registrar salida para monitoreo (Priority: P1)
+
+Como encargado de control de acceso quiero marcar el ticket con estado "salida" cuando la persona abandona el establecimiento, para mantener un monitoreo confiable de quienes estan fuera y habilitar el control de re-ingreso.
+
+**Why this priority**:
+
+Permite trazabilidad de egresos y evita inconsistencias en re-ingresos. Sin esta marca, el control de re-ingreso y el conteo de personas dentro/fuera se vuelve inexacto.
+
+**Independent Test**:
+
+Escanear un ticket valido en un punto de salida y verificar que el estado cambie a "salida" y quede registrado el evento con timestamp y lector.
+
+**Acceptance Scenarios**:
+
+1. **Scenario**: Registrar salida valida
+   - **Given** un ticket con estado "ingresado"
+   - **When** el encargado escanea el ticket en salida
+   - **Then** el sistema registra la salida
+   - **And** actualiza el estado del ticket a "salida"
+
+2. **Scenario**: Rechazar salida sin ingreso previo
+   - **Given** un ticket sin registro de ingreso
+   - **When** se intenta registrar salida
+   - **Then** el sistema rechaza la operacion
+   - **And** devuelve estado "salida no permitida"
+
+3. **Scenario**: Evitar doble salida
+   - **Given** un ticket con estado "salida"
+   - **When** se intenta registrar otra salida
+   - **Then** el sistema rechaza el intento
+   - **And** registra el intento como fallido
+
+---
+
 ### Edge Cases
 
 ¿Qué pasa si el ticket no tiene registro previo de ingreso?
 → El sistema debe tratarlo como primer ingreso y redirigir al flujo normal.
+
+¿Qué pasa si alguien con ticket duplicado entra en mi lugar cuando yo estoy afuera porque el evento permite re-ingreso?
+→ El sistema no se hace responsable.
 
 ¿Qué pasa si el evento permite re-ingreso pero el ticket fue cancelado después del primer ingreso?
 → El sistema debe rechazar el intento por estado inválido.

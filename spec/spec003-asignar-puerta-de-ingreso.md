@@ -27,13 +27,13 @@ Es fundamental para la logística del evento; sin una asignación previa, el sis
 
 **Independent Test**: 
 
-Se puede probar vinculando la "Puerta 1" exclusivamente a tickets de "Categoría VIP" y verificando que un ticket "General" sea rechazado en ese punto.
+Se puede probar vinculando la "Zona A" exclusivamente a tickets de "Categoría VIP" y verificando que un ticket "General" sea rechazado en ese punto.
 
 **Acceptance Scenarios**:
 
 1. **Scenario**: Asignación exitosa de zona a puerta.
    - **Given** Una lista de puertas disponibles y las categorías de tickets vendidos.
-   - **When**El encargado asigna la "Puerta 4" a la "Categoría General".
+   - **When**El encargado asigna la "Zona B" a la "Categoría General".
    - **Then** El sistema actualiza las reglas de validación para que solo los tickets "General" sean marcados como "Exitosos" en esa puerta.
 
 ---
@@ -53,8 +53,8 @@ Test: Cambiar la configuración de una puerta activa y confirmar que el cambio s
 **Acceptance Scenarios**:
 
 1. **Scenario**: Re-asignación de puerta por alta demanda.
-   - **Given** La "Puerta 2" está saturada y la "Puerta 3" (sin asignación) está libre.
-   - **When** El encargado habilita la "Puerta 3" para la misma categoría de la "Puerta 2".
+   - **Given** La "Zona C" está saturada y la "Zona D" (sin asignación) está libre.
+   - **When** El encargado habilita la "Zona D" para la misma categoría de la "Zona C".
    - **Then** El sistema permite el ingreso de esos tickets en ambos puntos de acceso.
 
 ---

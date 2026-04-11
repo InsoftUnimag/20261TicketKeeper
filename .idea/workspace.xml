@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Creación de archivos md 4 últimos specs">
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="actualizacion a 5 specs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec001-proc-intento-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec002-proc-intento-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec002-informar-estado-tickect.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec001-informar-estado-tickect.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec003-consultar-registro-de-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec005-consultar-registro-de-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec004-registrar-check-in.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec005-registrar-intento-fallido.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec006-registrar-reingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec004-registrar-reingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec007-registrar-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/spec/spec003-asignar-puerta-de-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/spec008-asignar-puerta-de-ingreso.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,19 +66,6 @@
       <recent name="C:\Users\user\Desktop\Modulo2\spec" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Modulo2" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Modulo2" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -112,7 +91,9 @@
       <workItem from="1771861375576" duration="883000" />
       <workItem from="1771884063946" duration="54000" />
       <workItem from="1771884254635" duration="4283000" />
-      <workItem from="1771889911434" duration="708000" />
+      <workItem from="1771889911434" duration="826000" />
+      <workItem from="1772317639426" duration="17000" />
+      <workItem from="1772420859865" duration="472000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -162,7 +143,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771886337402</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="actualizacion a 5 specs">
+      <option name="closed" value="true" />
+      <created>1771890655633</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1771890655633</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,6 +190,7 @@
     <MESSAGE value="creación spec 2" />
     <MESSAGE value="creación spec 4" />
     <MESSAGE value="Creación de archivos md 4 últimos specs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creación de archivos md 4 últimos specs" />
+    <MESSAGE value="actualizacion a 5 specs" />
+    <option name="LAST_COMMIT_MESSAGE" value="actualizacion a 5 specs" />
   </component>
 </project>

@@ -32,7 +32,10 @@ Como encargado de control de acceso, quiero registrar el check-in de un asistent
    - **And** la puerta corresponde a la zona permitida.
    - **And** el ticket no ha sido previamente utilizado.
    - **When** El encargado procesa el intento de ingreso.
-   - **Then** El sistema registra el check-in como "Exitoso" y actualiza la capacidad del recinto.
+   - **Then** el sistema crea un RegistroIngreso.
+   - **And** guarda idTicket, idEvento, fechaHoraIngreso y puertaAsignada.
+   - **And** registra tipoAcceso = "Ingreso".
+   - **And** actualiza la capacidad del recinto
    - **And** devuelve respuesta "Ingreso Exitoso"
 ---
 
@@ -148,15 +151,34 @@ Revisar que cada intento fallido tenga información mínima obligatoria.
    - **Then** el sistema almacena fecha, lector, motivo y sesión
 
 ---
+### User Story 7 - Registrar ingreso manual cuando el lector QR falla (Priority: P2)
 
+Como encargado de control de acceso quiero registrar manualmente el código de un ticket cuando el lector QR no esté disponible, para permitir el ingreso del asistente sin detener la operación del evento.
+
+**Why this priority**: 
+
+Los dispositivos de escaneo pueden fallar. El sistema debe permitir continuar el control de acceso mediante ingreso manual.
+**Independent Test**:
+
+El encargado introduce manualmente el código del ticket, el sistema valida el ticket y registra el intento de ingreso igual que si hubiera sido escaneado.
+
+**Acceptance Scenarios**:
+
+1. **Scenario**: Registro manual exitoso
+   - **Given** el lector QR no funciona
+   - **When** el encargado ingresa manualmente el código del ticket
+   - **Then** El sistema valida el ticket
+   - **And** registra el intento de ingreso
+
+---
 
 ### Edge Cases
 
-¿Qué pasa si el ticket no existe en la base de datos?
+¿Qué pasa si el ticket no existe en la informacion dada?
 → El sistema debe rechazar el intento y devolver error “Ticket no encontrado”, registrando el intento como fallido.
 
 ¿Qué pasa si hay pérdida de conexión con la base de datos?
-→ El sistema debe devolver error técnico y no permitir el ingreso.
+→ El sistema debe devolver error técnico y no permitir el ingreso o hacer uso de una base de datos local.
 
 ¿Qué pasa si dos lectores procesan el mismo ticket exactamente al mismo tiempo?
 → El sistema debe garantizar atomicidad y evitar doble check-in (control de concurrencia).
@@ -194,7 +216,7 @@ activa.
 
 -**FR-008**: System MUST garantizar control de concurrencia para evitar doble procesamiento.
 
--**FR-009**: System MUST actualizar el estado del ticket a “ingresado” cuando el intento sea exitoso.
+-**FR-009**: System MUST crear un RegistroIngreso y actualizar el estado del ticket a "ingresado" cuando el intento sea exitoso.
 
 -**FR-010**: System MUST almacenar el motivo de rechazo usando el diccionario de errores definido.
 
@@ -208,7 +230,11 @@ activa.
     Representa cada intento de validación de acceso.
     Atributos: id, ticket_id, fecha_hora, lector_id, resultado (aprobado/rechazado), código_error.
 
-**Lector/Puerta**:
+**RegistroIngreso**:
+    Representa la confirmación de acceso al evento.
+    Atributos: idTicket, idEvento, fechaHoraIngreso, puertaAsignada, tipoAcceso.
+
+**Lector**:
     Representa el dispositivo o acceso físico.
     Atributos: id, zona_asignada, estado.
 
