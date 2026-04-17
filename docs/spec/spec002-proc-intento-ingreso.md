@@ -1,55 +1,40 @@
-# Feature Specification: [Procesar intento de ingreso]
+# Feature Specification: Procesar intento de ingreso
 
-**Created**: 21-02-2026 
+**Created**: 21-02-2026
 
 ## User Scenarios & Testing *(mandatory)*
 
-<!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
-  
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
--->
+### User Story 1 - Validacion y registro de ingreso exitoso (Priority: P1)
 
-### User Story 1 - Validacion y Registro de ingreso exitoso (Priority: P1)
+Como encargado de control de acceso, quiero registrar el check-in de un asistente escaneando su ticket para permitir su ingreso si es valido.
 
-Como encargado de control de acceso, quiero registrar el check-in de un asistente escaneando su ticket para permitir su ingreso si es válido.
+**Why this priority**: Es el nucleo de la operacion del evento; con esto hay control de acceso, trazabilidad y operacion continua en puertas.
 
-**Why this priority**:Es el núcleo de la operación del evento; con esto, hay control de aforo, seguridad en el recinto y mejora la experiencia del asistente.
+**Independent Test**: Puede probarse escaneando un ticket valido previamente no utilizado y verificando que cambie de estado a `ingresado`, se registre hora, fecha y puerta, y que el sistema autorice el acceso.
 
-**Independent Test**: Puede probarse escaneando un ticket válido previamente no utilizado y verificando que cambie de estado a “Ingreso Autorizado”; se registre hora, fecha y puerta; y que permita el acceso.
 **Acceptance Scenarios**:
 
 1. **Scenario**: Ingreso exitoso por puerta correcta.
-   - **Given** Un asistente con un ticket válido, activo.
-   - **And** el ticket pertenece a la sesión/evento actual.
-   - **And** la puerta corresponde a la zona permitida.
-   - **And** el ticket no ha sido previamente utilizado.
-   - **When** El encargado procesa el intento de ingreso.
-   - **Then** el sistema crea un RegistroIngreso.
-   - **And** guarda idTicket, idEvento, fechaHoraIngreso y puertaAsignada.
-   - **And** registra tipoAcceso = "Ingreso".
-   - **And** actualiza la capacidad del recinto
-   - **And** devuelve respuesta "Ingreso Exitoso"
+   - **Given** un ticket valido con estado `activo`
+   - **And** el ticket pertenece a la sesion activa del evento
+   - **And** la puerta corresponde a la zona permitida
+   - **And** el ticket no ha sido previamente utilizado
+   - **When** el encargado procesa el intento de ingreso
+   - **Then** el sistema crea un `RegistroIngreso`
+   - **And** guarda `idTicket`, `idEvento`, `fechaHoraIngreso` y `puertaAsignada`
+   - **And** registra `tipoAcceso = INGRESO`
+   - **And** actualiza el contador de ocupacion del evento o zona si ese modulo esta habilitado
+   - **And** devuelve una respuesta estructurada con `status = APROBADO`
+
 ---
 
-### User Story 2 - Rechazar intento por ticket duplicado (P)riority: P1
+### User Story 2 - Rechazar intento por ticket duplicado (Priority: P1)
 
-Yo como encargado escaneo un ticket que ya fue procesado previamente en otro lector.
+Como encargado, escaneo un ticket que ya fue procesado previamente en otro lector.
 
-**Why this priority**:
+**Why this priority**: Evita fraude y reuso de credenciales. Es critico para la seguridad del evento.
 
-Evita fraude y reuso de credenciales. Es crítico para la seguridad del evento.
-
-**Independent Test**:
-
-Escanear dos veces el mismo ticket en lectores distintos. El segundo intento debe generar error “Ticket Duplicado”.
+**Independent Test**: Escanear dos veces el mismo ticket en lectores distintos. El segundo intento debe generar error `TICKET_DUPLICADO`.
 
 **Acceptance Scenarios**:
 
@@ -57,207 +42,198 @@ Escanear dos veces el mismo ticket en lectores distintos. El segundo intento deb
    - **Given** un ticket que ya tiene un registro previo de check-in
    - **When** el encargado escanea nuevamente el ticket
    - **Then** el sistema rechaza el intento
-   - **And** devuelve error "Ticket Duplicado"
-
+   - **And** devuelve error `TICKET_DUPLICADO`
 
 ---
 
-### User Story 3 - Rechazar ingreso por zona incorrecta (P)riority: P1
+### User Story 3 - Rechazar ingreso por zona incorrecta (Priority: P1)
 
-Yo como encargado escaneo un ticket válido, pero en una puerta que no corresponde a su categoría o zona.
+Como encargado, escaneo un ticket valido pero en una puerta que no corresponde a su categoria o zona.
 
-**Why this priority**:
+**Why this priority**: Controla la segmentacion de accesos.
 
-Controla segmentación de accesos (VIP, general, staff, etc.).
-
-**Independent Test**:
-
-Escanear un ticket válido en una puerta distinta a la asignada. Debe devolver error “Zona Incorrecta”.
+**Independent Test**: Escanear un ticket valido en una puerta distinta a la asignada. Debe devolver error `ZONA_INCORRECTA`.
 
 **Acceptance Scenarios**:
 
 1. **Scenario**: Acceso no autorizado por zona
-   - **Given** un ticket válido para zona A
+   - **Given** un ticket valido para zona A
    - **And** el lector pertenece a zona B
    - **When** se escanea el ticket
    - **Then** el sistema rechaza el intento
-   - **And** devuelve error "Zona Incorrecta"
-
+   - **And** devuelve error `ZONA_INCORRECTA`
 
 ---
 
-### User Story 4 - Rechazar ingreso por estado inválido (P)riority: P1
+### User Story 4 - Rechazar ingreso por estado invalido (Priority: P1)
 
-Yo como encargado escaneo un ticket cuyo estado no permite ingreso (cancelado, reembolsado, bloqueado, etc.).
+Como encargado, escaneo un ticket cuyo estado no permite ingreso, por ejemplo `cancelado`, `reembolsado` o `bloqueado`.
 
-**Why this priority**: 
+**Why this priority**: Garantiza que solo tickets activos puedan ingresar.
 
-Garantiza que solo tickets activos puedan ingresar.
-
-**Independent Test**:
-
-Escanear un ticket con estado "cancelado". El sistema debe devolver “Estado inválido”.
+**Independent Test**: Escanear un ticket con estado `cancelado`. El sistema debe devolver `ESTADO_INVALIDO`.
 
 **Acceptance Scenarios**:
 
-1. **Scenario**: Ticket con estado no válido
-   - **Given** un ticket con estado distinto a "activo"
+1. **Scenario**: Ticket con estado no valido
+   - **Given** un ticket con estado distinto a `activo`
    - **When** se escanea el ticket
    - **Then** el sistema rechaza el intento
-   - **And** devuelve error "Estado inválido"
-
+   - **And** devuelve error `ESTADO_INVALIDO`
 
 ---
 
-### User Story 5 - Rechazar ingreso por sesión inválida (P)riority: P1
+### User Story 5 - Rechazar ingreso por sesion invalida (Priority: P1)
 
-Yo como encargado escaneo un ticket correspondiente a otro evento o fecha.
+Como encargado, escaneo un ticket correspondiente a otro evento o fecha.
 
-**Why this priority**: 
+**Why this priority**: Evita ingresos fuera de la fecha o evento correspondiente.
 
-Evita ingresos fuera de la fecha o evento correspondiente.
-
-**Independent Test**:
-
-Escanear ticket de evento pasado o distinto. El sistema debe devolver “Sesión Inválida”.
+**Independent Test**: Escanear un ticket de evento pasado o distinto. El sistema debe devolver `SESION_INVALIDA`.
 
 **Acceptance Scenarios**:
 
 1. **Scenario**: Ticket de evento distinto
-   - **Given** un ticket asociado a una sesión diferente a la activa
+   - **Given** un ticket asociado a una sesion diferente a la activa
    - **When** se escanea el ticket
    - **Then** el sistema rechaza el intento
-   - **And** devuelve error "Sesión Inválida"
-
+   - **And** devuelve error `SESION_INVALIDA`
 
 ---
+
 ### User Story 6 - Asociar contexto del intento fallido (Priority: P1)
 
-Yo como auditor del sistema necesito que cada intento fallido tenga contexto suficiente para su análisis posterior.
+Como auditor del sistema, necesito que cada intento fallido tenga contexto suficiente para su analisis posterior.
 
-**Why this priority**: 
+**Why this priority**: Sin contexto, el registro no tiene valor operativo ni legal.
 
-Sin contexto, el registro no tiene valor operativo ni legal.
-
-**Independent Test**:
-
-Revisar que cada intento fallido tenga información mínima obligatoria.
+**Independent Test**: Revisar que cada intento fallido tenga la informacion minima obligatoria.
 
 **Acceptance Scenarios**:
 
 1. **Scenario**: Registro con datos completos
    - **Given** un intento de ingreso rechazado
    - **When** se registra el intento
-   - **Then** el sistema almacena fecha, lector, motivo y sesión
+   - **Then** el sistema almacena `fechaHora`, `lectorId`, `puertaId`, `sesionId`, `codigoTicketIngresado`, `resultado` y `codigoError`
+   - **And** almacena `ticketId` solo si el ticket existe en el sistema
 
 ---
+
 ### User Story 7 - Registrar ingreso manual cuando el lector QR falla (Priority: P2)
 
-Como encargado de control de acceso quiero registrar manualmente el código de un ticket cuando el lector QR no esté disponible, para permitir el ingreso del asistente sin detener la operación del evento.
+Como encargado de control de acceso, quiero registrar manualmente el codigo de un ticket cuando el lector QR no este disponible, para permitir el ingreso del asistente sin detener la operacion del evento.
 
-**Why this priority**: 
+**Why this priority**: Los dispositivos de escaneo pueden fallar. El sistema debe permitir continuar la operacion mediante ingreso manual.
 
-Los dispositivos de escaneo pueden fallar. El sistema debe permitir continuar el control de acceso mediante ingreso manual.
-**Independent Test**:
-
-El encargado introduce manualmente el código del ticket, el sistema valida el ticket y registra el intento de ingreso igual que si hubiera sido escaneado.
+**Independent Test**: El encargado introduce manualmente el codigo del ticket, el sistema valida el ticket y registra el intento de ingreso igual que si hubiera sido escaneado.
 
 **Acceptance Scenarios**:
 
 1. **Scenario**: Registro manual exitoso
    - **Given** el lector QR no funciona
-   - **When** el encargado ingresa manualmente el código del ticket
-   - **Then** El sistema valida el ticket
+   - **When** el encargado ingresa manualmente el codigo del ticket
+   - **Then** el sistema valida el ticket
    - **And** registra el intento de ingreso
+   - **And** guarda `canalEntrada = MANUAL`
 
 ---
 
-### Edge Cases
+## Business Rules
 
-¿Qué pasa si el ticket no existe en la informacion dada?
-→ El sistema debe rechazar el intento y devolver error “Ticket no encontrado”, registrando el intento como fallido.
+### Orden de validacion
 
-¿Qué pasa si hay pérdida de conexión con la base de datos?
-→ El sistema debe devolver error técnico y no permitir el ingreso o hacer uso de una base de datos local.
+El sistema debe evaluar las reglas de negocio en el siguiente orden y devolver solo el primer error aplicable:
 
-¿Qué pasa si dos lectores procesan el mismo ticket exactamente al mismo tiempo?
-→ El sistema debe garantizar atomicidad y evitar doble check-in (control de concurrencia).
+1. Validar configuracion del lector y puerta.
+2. Validar existencia del ticket.
+3. Validar estado del ticket.
+4. Validar sesion activa del evento.
+5. Validar zona o puerta autorizada.
+6. Validar duplicidad de ingreso.
 
-¿Qué pasa si el lector no tiene zona configurada?
-→ El sistema debe rechazar el procesamiento y registrar error de configuración.
+### Prioridad de errores
 
-¿Qué pasa si falla el almacenamiento del intento fallido?
-→ El sistema debe generar alerta técnica y no permitir continuar silenciosamente.
+Si un ticket incumple varias reglas al mismo tiempo, el sistema debe responder con el error correspondiente a la primera validacion fallida segun el orden anterior.
+
+### Regla de concurrencia
+
+La validacion de duplicidad y el registro del ingreso exitoso deben ejecutarse dentro de la misma transaccion protegida por mecanismos de consistencia en base de datos para evitar doble check-in incluso con multiples lectores o multiples instancias de la aplicacion.
+
+## Edge Cases
+
+Que pasa si el ticket no existe en la informacion dada?
+-> El sistema debe rechazar el intento y devolver error `TICKET_NO_ENCONTRADO`, registrando el intento como fallido con `ticketId = null`.
+
+Que pasa si hay perdida de conexion con la base de datos?
+-> El sistema debe devolver `ERROR_TECNICO` y no permitir el ingreso. El uso de una base de datos local queda fuera del alcance de este feature.
+
+Que pasa si dos lectores procesan el mismo ticket exactamente al mismo tiempo?
+-> El sistema debe garantizar atomicidad y evitar doble check-in mediante control de concurrencia a nivel transaccional y de persistencia.
+
+Que pasa si el lector no tiene zona configurada?
+-> El sistema debe rechazar el procesamiento y registrar error `LECTOR_NO_CONFIGURADO`.
+
+Que pasa si falla el almacenamiento del intento fallido?
+-> El sistema debe generar alerta tecnica y devolver `ERROR_TECNICO`. No debe continuar silenciosamente.
 
 ## Requirements *(mandatory)*
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
--->
-
 ### Functional Requirements
 
+- **FR-001**: System MUST validar la configuracion del lector antes de procesar el ticket.
+- **FR-002**: System MUST validar la existencia del ticket en la base de datos.
+- **FR-003**: System MUST validar que el estado del ticket sea valido para ingreso.
+- **FR-004**: System MUST validar que la sesion del ticket coincida con la sesion activa del evento.
+- **FR-005**: System MUST validar que la puerta pertenezca a la zona autorizada para el ticket.
+- **FR-006**: System MUST verificar que el ticket no haya sido previamente utilizado.
+- **FR-007**: System MUST registrar todo intento de ingreso, exitoso o fallido, con `fechaHora`, `lectorId`, `puertaId`, `sesionId`, `canalEntrada`, `resultado` y `codigoError` cuando corresponda.
+- **FR-008**: System MUST permitir que `ticketId` sea nulo en intentos fallidos cuando el codigo ingresado no exista en el sistema.
+- **FR-009**: System MUST devolver un resultado estructurado con `status`, `message`, `errorCode` opcional y datos minimos del intento procesado.
+- **FR-010**: System MUST garantizar control de concurrencia para evitar doble procesamiento del mismo ticket incluso con multiples lectores o instancias.
+- **FR-011**: System MUST crear un `RegistroIngreso` y actualizar el estado del ticket a `ingresado` cuando el intento sea exitoso.
+- **FR-012**: System MUST almacenar el motivo de rechazo usando un diccionario de errores estable.
+- **FR-013**: System MUST procesar el flujo manual reutilizando las mismas validaciones del flujo de escaneo y registrando `canalEntrada = MANUAL`.
+- **FR-014**: System MUST actualizar el contador de ocupacion del evento o zona solo si dicho modulo existe y dentro de la misma transaccion del ingreso exitoso.
+- **FR-015**: System MUST evaluar las validaciones en el orden de negocio definido en la seccion `Business Rules`.
 
--**FR-001**: System MUST validar la existencia del ticket en la base de datos.
-
--**FR-002**: System MUST validar que el estado del ticket sea válido para ingreso.
-
--**FR-003**: System MUST validar que la sesión/evento del ticket coincida con la sesión 
-activa.
-
--**FR-004**: System MUST validar que la puerta pertenezca a la zona autorizada para el ticket.
-
--**FR-005**: System MUST verificar que el ticket no haya sido previamente utilizado.
-
--**FR-006**: System MUST registrar el intento de ingreso (exitoso o fallido) con timestamp y lector.
-
--**FR-007**: System MUST devolver un resultado estructurado con estado (aprobado/rechazado) y código de error cuando corresponda.
-
--**FR-008**: System MUST garantizar control de concurrencia para evitar doble procesamiento.
-
--**FR-009**: System MUST crear un RegistroIngreso y actualizar el estado del ticket a "ingresado" cuando el intento sea exitoso.
-
--**FR-010**: System MUST almacenar el motivo de rechazo usando el diccionario de errores definido.
-
-### Key Entities 
+### Key Entities
 
 **Ticket**:
-    Representa la credencial de acceso.
-    Atributos clave: id, código único, estado, categoría, zona permitida, sesión/evento, fecha, indicador de usado.
+Representa la credencial de acceso.
+Atributos clave: `id`, `codigoUnico`, `estado`, `categoria`, `zonaPermitida`, `sesionId`, `indicadorUsado`.
 
 **IntentoIngreso**:
-    Representa cada intento de validación de acceso.
-    Atributos: id, ticket_id, fecha_hora, lector_id, resultado (aprobado/rechazado), código_error.
+Representa cada intento de validacion de acceso.
+Atributos: `id`, `ticketId` nullable, `codigoTicketIngresado`, `fechaHora`, `lectorId`, `puertaId`, `sesionId`, `canalEntrada`, `resultado`, `codigoError` nullable.
 
 **RegistroIngreso**:
-    Representa la confirmación de acceso al evento.
-    Atributos: idTicket, idEvento, fechaHoraIngreso, puertaAsignada, tipoAcceso.
+Representa la confirmacion de acceso al evento.
+Atributos: `idTicket`, `idEvento`, `fechaHoraIngreso`, `puertaAsignada`, `tipoAcceso`.
 
 **Lector**:
-    Representa el dispositivo o acceso físico.
-    Atributos: id, zona_asignada, estado.
+Representa el dispositivo o acceso fisico.
+Atributos: `id`, `zonaAsignada`, `puertaId`, `estado`.
 
-**Sesión/Evento**:
-    Representa la instancia temporal del evento.
-    Atributos: id, fecha, estado (activa/inactiva).
+**SesionEvento**:
+Representa la instancia temporal del evento.
+Atributos: `id`, `fecha`, `estado`, `aforoMaximo`, `ocupacionActual`.
+
+### Error Dictionary
+
+- `LECTOR_NO_CONFIGURADO`
+- `TICKET_NO_ENCONTRADO`
+- `ESTADO_INVALIDO`
+- `SESION_INVALIDA`
+- `ZONA_INCORRECTA`
+- `TICKET_DUPLICADO`
+- `ERROR_TECNICO`
 
 ## Success Criteria *(mandatory)*
 
-<!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
--->
-
 ### Measurable Outcomes
 
- -**SC-001**: 100% de los intentos de ingreso generan un registro auditable.
-
- -**SC-002**: El sistema responde a un intento de escaneo en menos de 2 segundos en condiciones normales.
-
- -**SC-003**: 0 casos de doble ingreso para un mismo ticket bajo condiciones de concurrencia.
-
- -**SC-004**: 99% de los intentos válidos son autorizados correctamente sin intervención manual.
- 
- -**SC-005**: 100% de los rechazos muestran un código de error correspondiente al diccionario definido.
-
+- **SC-001**: 100% de los intentos de ingreso generan un registro auditable.
+- **SC-002**: El sistema responde a un intento de escaneo en menos de 2 segundos en condiciones normales.
+- **SC-003**: 0 casos de doble ingreso para un mismo ticket bajo condiciones de concurrencia.
+- **SC-004**: 99% de los intentos validos son autorizados correctamente sin intervencion manual.
+- **SC-005**: 100% de los rechazos muestran un codigo de error correspondiente al diccionario definido.

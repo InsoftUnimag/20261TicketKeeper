@@ -4,14 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="feature spec 001" />
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="plan spec final">
+      <change beforePath="$PROJECT_DIR$/.idea/20261TicketKeeper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/20261TicketKeeper.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec002-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec002-java-clean-complete.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/spec/spec002-proc-intento-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec002-proc-intento-ingreso.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="31" />
+    <option name="cachedIndexableFilesCount" value="111" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -56,7 +61,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "feature/planesfinal",
+    "git-widget-placeholder": "feature/implementacion-plan-002",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/user/Desktop/Modulo2/spec",
@@ -65,7 +70,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "ml.llm.AcpAgentsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -239,5 +247,9 @@
     <MESSAGE value="feature creacion plan prueba" />
     <MESSAGE value="feature spec 001" />
     <option name="LAST_COMMIT_MESSAGE" value="feature spec 001" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
