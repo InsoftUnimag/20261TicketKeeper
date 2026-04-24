@@ -1,4 +1,4 @@
-package com.empresa.ingreso.application.dto;
+package com.empresa.ingreso.interfaces.api.dto;
 
 import com.empresa.ingreso.domain.model.AccessChannel;
 import jakarta.validation.constraints.NotBlank;

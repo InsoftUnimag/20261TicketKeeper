@@ -53,54 +53,75 @@ Controller -> Use Case -> Repository -> Database
 ```text
 src/main/java/com/empresa/ingreso/
 
-|-- domain/
-|   |-- entities/
-|   |   |-- Ticket.java
-|   |   |-- IntentoIngreso.java
-|   |   |-- RegistroIngreso.java
-|   |   |-- Lector.java
-|   |   |-- SesionEvento.java
-|   |   `-- OcupacionEvento.java
-|   `-- repositories/
-|       |-- TicketRepository.java
-|       |-- IntentoIngresoRepository.java
-|       |-- RegistroIngresoRepository.java
-|       |-- LectorRepository.java
-|       `-- SesionEventoRepository.java
+|-- IngresoApplication.java
 |
 |-- application/
-|   |-- usecase/
-|   |   |-- ProcesarIntentoIngresoUseCase.java
-|   |   `-- ProcesarIngresoManualUseCase.java
-|   `-- dto/
-|       |-- ProcesarIntentoIngresoRequest.java
-|       |-- ProcesarIntentoIngresoResponse.java
-|       `-- ErrorResponse.java
+|   |-- port/
+|   |   |-- in/
+|   |   |   |-- ProcessEntryAttemptCommand.java
+|   |   |   |-- ProcessEntryAttemptResult.java
+|   |   |   `-- ProcessEntryAttemptUseCase.java
+|   |   `-- out/
+|   |       |-- LoadEventSessionPort.java
+|   |       |-- LoadReaderDevicePort.java
+|   |       |-- LoadTicketPort.java
+|   |       |-- SaveAccessAttemptPort.java
+|   |       |-- SaveEntryRecordPort.java
+|   |       `-- SaveTicketPort.java
+|   `-- usecase/
+|       `-- DefaultProcessEntryAttemptUseCase.java
+|
+|-- domain/
+|   `-- model/
+|       |-- AccessAttempt.java
+|       |-- AccessChannel.java
+|       |-- AccessType.java
+|       |-- AttemptResult.java
+|       |-- EntryRecord.java
+|       |-- EventSession.java
+|       |-- ReaderDevice.java
+|       |-- Ticket.java
+|       `-- TicketStatus.java
 |
 |-- infrastructure/
-|   |-- persistence/
-|   |   |-- JpaTicketRepository.java
-|   |   |-- JpaIntentoIngresoRepository.java
-|   |   |-- JpaRegistroIngresoRepository.java
-|   |   |-- JpaLectorRepository.java
-|   |   `-- JpaSesionEventoRepository.java
-|   |-- interfaces/
-|   |   `-- api/
-|   |       `-- IngresoController.java
-|   |-- config/
-|   |   |-- AppConfig.java
-|   |   `-- TransactionConfig.java
-|   `-- concurrency/
-|       |-- TicketConcurrencyPolicy.java
-|       `-- DatabaseLockingStrategy.java
+|   `-- persistence/
+|       |-- PersistenceAdapter.java
+|       |-- dto/
+|       |-- entity/
+|       |   |-- AccessAttemptEntity.java
+|       |   |-- EntryRecordEntity.java
+|       |   |-- EventSessionEntity.java
+|       |   |-- ReaderDeviceEntity.java
+|       |   `-- TicketEntity.java
+|       `-- repository/
+|           |-- SpringDataAccessAttemptRepository.java
+|           |-- SpringDataEntryRecordRepository.java
+|           |-- SpringDataEventSessionRepository.java
+|           |-- SpringDataReaderDeviceRepository.java
+|           `-- SpringDataTicketRepository.java
+|
+|-- interfaces/
+|   `-- api/
+|       |-- EntryController.java
+|       |-- GlobalExceptionHandler.java
+|       `-- dto/
+|           |-- ProcessEntryAttemptRequest.java
+|           `-- ProcessEntryAttemptResponse.java
 |
 `-- shared/
-    |-- errors/
-    |   |-- ErrorCode.java
-    |   |-- BusinessException.java
-    |   `-- TechnicalException.java
-    `-- constants/
-        `-- SystemConstants.java
+    `-- errors/
+        |-- BusinessException.java
+        |-- ErrorCode.java
+        `-- TechnicalException.java
+```
+
+```text
+src/test/java/com/empresa/ingreso/
+
+|-- IngresoApplicationTests.java
+`-- application/
+    `-- usecase/
+        `-- DefaultProcessEntryAttemptUseCaseTest.java
 ```
 
 ---
@@ -124,8 +145,8 @@ src/main/java/com/empresa/ingreso/
 **Objetivo**: Construir la base tecnica necesaria para soportar los casos de uso del sistema.
 
 - Crear entidades: `Ticket`, `IntentoIngreso`, `RegistroIngreso`, `Lector`, `SesionEvento`
-- Definir interfaces de repositorios
-- Implementar repositorios con JPA
+- Definir puertos de entrada y salida en `application.port`
+- Implementar adaptador de persistencia y repositorios JPA en `infrastructure.persistence`
 - Configurar transacciones
 - Implementar logging
 - Implementar manejo de errores
@@ -255,7 +276,9 @@ Cada rechazo debe generar un intento fallido auditable con su codigo de error co
 - Logica en use cases
 - Sin capa service
 - Arquitectura limpia
-- Interfaces ubicadas al mismo nivel que `persistence` dentro de `infrastructure`
+- Los contratos del caso de uso viven en `application.port.in` y `application.port.out`
+- Los DTO HTTP viven en `interfaces.api.dto`
+- `interfaces` e `infrastructure` son paquetes hermanos bajo `com.empresa.ingreso`
 - El orden de validaciones debe mantenerse estable: lector, existencia, estado, sesion, zona, duplicidad
 - Si el modulo de ocupacion no existe aun, la actualizacion de capacidad debe desacoplarse o marcarse fuera de alcance tecnico inmediato
 

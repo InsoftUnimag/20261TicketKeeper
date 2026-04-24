@@ -1,8 +1,8 @@
-package com.empresa.ingreso.application.dto;
+package com.empresa.ingreso.application.port.in;
 
 import com.empresa.ingreso.shared.errors.ErrorCode;
 
-public record ProcessEntryAttemptResponse(
+public record ProcessEntryAttemptResult(
         String status,
         String message,
         ErrorCode errorCode,

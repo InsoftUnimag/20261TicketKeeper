@@ -1,8 +1,10 @@
 package com.empresa.ingreso.interfaces.api;
 
-import com.empresa.ingreso.application.dto.ProcessEntryAttemptRequest;
-import com.empresa.ingreso.application.dto.ProcessEntryAttemptResponse;
-import com.empresa.ingreso.application.usecase.ProcessEntryAttemptUseCase;
+import com.empresa.ingreso.application.port.in.ProcessEntryAttemptCommand;
+import com.empresa.ingreso.application.port.in.ProcessEntryAttemptResult;
+import com.empresa.ingreso.application.port.in.ProcessEntryAttemptUseCase;
+import com.empresa.ingreso.interfaces.api.dto.ProcessEntryAttemptRequest;
+import com.empresa.ingreso.interfaces.api.dto.ProcessEntryAttemptResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,19 @@ public class EntryController {
 
     @PostMapping
     public ResponseEntity<ProcessEntryAttemptResponse> process(@Valid @RequestBody ProcessEntryAttemptRequest request) {
-        ProcessEntryAttemptResponse response = processEntryAttemptUseCase.execute(request);
-        HttpStatus httpStatus = "APROBADO".equals(response.status()) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(httpStatus).body(response);
+        ProcessEntryAttemptResult result = processEntryAttemptUseCase.execute(new ProcessEntryAttemptCommand(
+                request.ticketCode(),
+                request.readerId(),
+                request.gateId(),
+                request.sessionId(),
+                request.channel()
+        ));
+        ProcessEntryAttemptResponse response = new ProcessEntryAttemptResponse(
+                result.status(),
+                result.message(),
+                result.errorCode(),
+                result.attemptId()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
