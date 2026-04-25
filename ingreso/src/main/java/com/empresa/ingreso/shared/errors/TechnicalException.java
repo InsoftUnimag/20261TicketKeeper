@@ -9,6 +9,11 @@ public class TechnicalException extends RuntimeException {
         this.errorCode = ErrorCode.ERROR_TECNICO;
     }
 
+    public TechnicalException(String message, Throwable cause) {
+        super(message, cause);
+        this.errorCode = ErrorCode.ERROR_TECNICO;
+    }
+
     public ErrorCode getErrorCode() {
         return errorCode;
     }

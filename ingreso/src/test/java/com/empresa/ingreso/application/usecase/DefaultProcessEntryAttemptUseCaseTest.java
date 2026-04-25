@@ -5,19 +5,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
-import com.empresa.ingreso.application.dto.ProcessEntryAttemptRequest;
+import com.empresa.ingreso.application.port.in.ProcessEntryAttemptCommand;
+import com.empresa.ingreso.application.port.out.LoadEventSessionPort;
+import com.empresa.ingreso.application.port.out.LoadReaderDevicePort;
+import com.empresa.ingreso.application.port.out.LoadTicketPort;
+import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
+import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
+import com.empresa.ingreso.application.port.out.SaveTicketPort;
+import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.AccessChannel;
+import com.empresa.ingreso.domain.model.EventSession;
+import com.empresa.ingreso.domain.model.ReaderDevice;
+import com.empresa.ingreso.domain.model.Ticket;
 import com.empresa.ingreso.domain.model.TicketStatus;
-import com.empresa.ingreso.infrastructure.persistence.entity.AccessAttemptEntity;
-import com.empresa.ingreso.infrastructure.persistence.entity.EventSessionEntity;
-import com.empresa.ingreso.infrastructure.persistence.entity.ReaderDeviceEntity;
-import com.empresa.ingreso.infrastructure.persistence.entity.TicketEntity;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataAccessAttemptRepository;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataEntryRecordRepository;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataEventSessionRepository;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataReaderDeviceRepository;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataTicketRepository;
 import com.empresa.ingreso.shared.errors.ErrorCode;
 import java.time.Clock;
 import java.time.Instant;
@@ -33,11 +35,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class DefaultProcessEntryAttemptUseCaseTest {
 
-    @Mock SpringDataReaderDeviceRepository readerRepo;
-    @Mock SpringDataTicketRepository ticketRepo;
-    @Mock SpringDataEventSessionRepository sessionRepo;
-    @Mock SpringDataAccessAttemptRepository attemptRepo;
-    @Mock SpringDataEntryRecordRepository entryRecordRepo;
+    @Mock LoadReaderDevicePort readerRepo;
+    @Mock LoadTicketPort ticketRepo;
+    @Mock SaveTicketPort saveTicketPort;
+    @Mock LoadEventSessionPort sessionRepo;
+    @Mock SaveAccessAttemptPort attemptRepo;
+    @Mock SaveEntryRecordPort entryRecordRepo;
 
     DefaultProcessEntryAttemptUseCase useCase;
     AtomicLong attemptIds;
@@ -46,22 +49,42 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void setUp() {
         attemptIds = new AtomicLong(100);
         when(attemptRepo.save(any())).thenAnswer(inv -> {
-            AccessAttemptEntity a = inv.getArgument(0);
-            if (a.getId() == null) a.setId(attemptIds.incrementAndGet());
-            return a;
+            AccessAttempt attempt = inv.getArgument(0);
+            return new AccessAttempt(
+                    attempt.id() == null ? attemptIds.incrementAndGet() : attempt.id(),
+                    attempt.ticketId(),
+                    attempt.enteredTicketCode(),
+                    attempt.readerId(),
+                    attempt.gateId(),
+                    attempt.sessionId(),
+                    attempt.channel(),
+                    attempt.result(),
+                    attempt.errorCode(),
+                    attempt.attemptedAt()
+            );
         });
+        lenient().when(saveTicketPort.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        lenient().when(entryRecordRepo.save(any())).thenAnswer(inv -> inv.getArgument(0));
         Clock fixed = Clock.fixed(Instant.parse("2026-04-17T12:00:00Z"), ZoneOffset.UTC);
-        useCase = new DefaultProcessEntryAttemptUseCase(readerRepo, ticketRepo, sessionRepo, attemptRepo, entryRecordRepo, fixed);
+        useCase = new DefaultProcessEntryAttemptUseCase(
+                readerRepo,
+                ticketRepo,
+                saveTicketPort,
+                sessionRepo,
+                attemptRepo,
+                entryRecordRepo,
+                fixed
+        );
     }
 
     @Test
     void rejects_when_reader_not_configured_and_does_not_query_ticket() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("ABC", 10L, 20L, 30L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.empty());
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("ABC", 10L, 20L, 30L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.empty());
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.LECTOR_NO_CONFIGURADO);
         assertThat(res.attemptId()).isNotNull();
         verify(ticketRepo, never()).findByCodeForUpdate(any());
@@ -69,106 +92,89 @@ class DefaultProcessEntryAttemptUseCaseTest {
 
     @Test
     void rejects_when_ticket_not_found() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("NOPE", 10L, 20L, 30L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("NOPE", 10L, 20L, 30L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
         when(ticketRepo.findByCodeForUpdate("NOPE")).thenReturn(Optional.empty());
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.TICKET_NO_ENCONTRADO);
     }
 
     @Test
     void rejects_when_ticket_status_invalid() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("T1", 10L, 20L, 30L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
         when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.CANCELED, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.ESTADO_INVALIDO);
     }
 
     @Test
     void rejects_when_session_invalid() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("T1", 10L, 20L, 999L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 999L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
         when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.SESION_INVALIDA);
     }
 
     @Test
     void rejects_when_zone_incorrect() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("T1", 10L, 20L, 30L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "B")));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "B")));
         when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
-        when(sessionRepo.findById(30L)).thenReturn(Optional.of(activeSession(30L)));
+        when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.ZONA_INCORRECTA);
     }
 
     @Test
     void rejects_when_ticket_duplicate() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("T1", 10L, 20L, 30L, AccessChannel.QR);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", true)));
-        when(sessionRepo.findById(30L)).thenReturn(Optional.of(activeSession(30L)));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
+        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ENTERED, 30L, "A", true)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("RECHAZADO");
+        assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.TICKET_DUPLICADO);
     }
 
     @Test
     void approves_when_all_validations_pass() {
-        ProcessEntryAttemptRequest req = new ProcessEntryAttemptRequest("T1", 10L, 20L, 30L, AccessChannel.MANUAL);
-        when(readerRepo.findById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
+        ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.MANUAL);
+        when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
         when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
-        when(sessionRepo.findById(30L)).thenReturn(Optional.of(activeSession(30L)));
+        when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("APROBADO");
+        assertThat(res.status()).isEqualTo("APPROVED");
         assertThat(res.errorCode()).isNull();
         assertThat(res.attemptId()).isNotNull();
     }
 
-    private static ReaderDeviceEntity validReader(Long readerId, Long gateId, String zone) {
-        ReaderDeviceEntity r = new ReaderDeviceEntity();
-        r.setId(readerId);
-        r.setGateId(gateId);
-        r.setAssignedZone(zone);
-        r.setEnabled(true);
-        return r;
+    private static ReaderDevice validReader(Long readerId, Long gateId, String zone) {
+        return new ReaderDevice(readerId, gateId, zone, true);
     }
 
-    private static TicketEntity ticket(Long id, String code, TicketStatus status, Long sessionId, String zone, boolean used) {
-        TicketEntity t = new TicketEntity();
-        t.setId(id);
-        t.setCode(code);
-        t.setStatus(status);
-        t.setCategory("GEN");
-        t.setAllowedZone(zone);
-        t.setSessionId(sessionId);
-        t.setUsed(used);
-        return t;
+    private static Ticket ticket(Long id, String code, TicketStatus status, Long sessionId, String zone, boolean used) {
+        return new Ticket(id, code, status, "GEN", zone, sessionId, used);
     }
 
-    private static EventSessionEntity activeSession(Long id) {
-        EventSessionEntity s = new EventSessionEntity();
-        s.setId(id);
-        s.setActive(true);
-        return s;
+    private static EventSession activeSession(Long id) {
+        return new EventSession(id, java.time.LocalDate.of(2026, 4, 17), true, 100, 10);
     }
 }
 

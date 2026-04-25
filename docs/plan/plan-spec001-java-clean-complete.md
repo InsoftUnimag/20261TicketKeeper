@@ -56,50 +56,52 @@ Controller → Use Case → Repository → Database
 ## 4. Project Structure
 
 ```text
-src/main/java/com/empresa/ingreso/
+ingreso/src/main/java/com/empresa/ingreso/
 
-├── domain/
-│   ├── entities/
-│   │   ├── Ticket.java
-│   │   ├── ConsultaTicket.java
-│   │   ├── RegistroIngreso.java
-│   │   └── SesionEvento.java
-│   └── repositories/
-│       ├── TicketRepository.java
-│       ├── ConsultaTicketRepository.java
-│       ├── RegistroIngresoRepository.java
-│       └── SesionEventoRepository.java
-
+├── IngresoApplication.java
 ├── application/
-│   ├── usecase/
-│   │   └── InformarEstadoTicketUseCase.java
-│   └── dto/
-│       ├── InformarEstadoTicketRequest.java
-│       ├── InformarEstadoTicketResponse.java
-│       └── ErrorResponse.java
-
+│   ├── port/
+│   │   ├── in/
+│   │   │   ├── GetTicketStatusCommand.java
+│   │   │   ├── GetTicketStatusResult.java
+│   │   │   └── GetTicketStatusUseCase.java
+│   │   └── out/
+│   │       ├── LoadEntryRecordPort.java
+│   │       ├── LoadEventSessionPort.java
+│   │       ├── LoadTicketByCodePort.java
+│   │       └── SaveTicketStatusQueryPort.java
+│   └── usecase/
+│       └── DefaultGetTicketStatusUseCase.java
+├── domain/
+│   └── model/
+│       ├── EntryRecord.java
+│       ├── EventSession.java
+│       ├── Ticket.java
+│       ├── TicketStatus.java
+│       └── TicketStatusQuery.java
 ├── infrastructure/
-│   ├── persistence/
-│   │   ├── JpaTicketRepository.java
-│   │   ├── JpaConsultaTicketRepository.java
-│   │   ├── JpaRegistroIngresoRepository.java
-│   │   └── JpaSesionEventoRepository.java
-│   ├── interfaces/
-│   │   └── api/
-│   │       └── ConsultaTicketController.java
-│   ├── config/
-│   │   ├── AppConfig.java
-│   │   └── QueryConfig.java
-│   └── consistency/
-│       └── TicketReadConsistencyPolicy.java
-
-├── shared/
-│   ├── errors/
-│   │   ├── ErrorCode.java
-│   │   ├── BusinessException.java
-│   │   └── TechnicalException.java
-│   └── constants/
-│       └── SystemConstants.java
+│   └── persistence/
+│       ├── PersistenceAdapter.java
+│       ├── entity/
+│       │   ├── EntryRecordEntity.java
+│       │   ├── EventSessionEntity.java
+│       │   ├── TicketEntity.java
+│       │   └── TicketStatusQueryEntity.java
+│       └── repository/
+│           ├── SpringDataEntryRecordRepository.java
+│           ├── SpringDataEventSessionRepository.java
+│           ├── SpringDataTicketRepository.java
+│           └── SpringDataTicketStatusQueryRepository.java
+├── interfaces/
+│   └── api/
+│       ├── TicketStatusController.java
+│       └── dto/
+│           └── GetTicketStatusResponse.java
+└── shared/
+    └── errors/
+        ├── BusinessException.java
+        ├── ErrorCode.java
+        └── TechnicalException.java
 ```
 
 ---
