@@ -51,62 +51,56 @@ Controller -> Use Case -> Repository -> Database
 ## 4. Project Structure
 
 ```text
-ingreso/src/main/java/com/empresa/ingreso/
+src/main/java/com/empresa/ingreso/
 
-├── IngresoApplication.java
-├── application/
-│   ├── port/
-│   │   ├── in/
-│   │   │   ├── ProcessEntryAttemptCommand.java
-│   │   │   ├── ProcessEntryAttemptResult.java
-│   │   │   └── ProcessEntryAttemptUseCase.java
-│   │   └── out/
-│   │       ├── LoadEventSessionPort.java
-│   │       ├── LoadReaderDevicePort.java
-│   │       ├── LoadTicketByCodePort.java
-│   │       ├── SaveAccessAttemptPort.java
-│   │       ├── SaveEntryRecordPort.java
-│   │       └── SaveTicketPort.java
-│   └── usecase/
-│       └── DefaultProcessEntryAttemptUseCase.java
-├── domain/
-│   └── model/
-│       ├── AccessAttempt.java
-│       ├── AccessChannel.java
-│       ├── AccessType.java
-│       ├── AttemptResult.java
-│       ├── EntryRecord.java
-│       ├── EventSession.java
-│       ├── ReaderDevice.java
-│       ├── Ticket.java
-│       └── TicketStatus.java
-├── infrastructure/
-│   └── persistence/
-│       ├── PersistenceAdapter.java
-│       ├── entity/
-│       │   ├── AccessAttemptEntity.java
-│       │   ├── EntryRecordEntity.java
-│       │   ├── EventSessionEntity.java
-│       │   ├── ReaderDeviceEntity.java
-│       │   └── TicketEntity.java
-│       └── repository/
-│           ├── SpringDataAccessAttemptRepository.java
-│           ├── SpringDataEntryRecordRepository.java
-│           ├── SpringDataEventSessionRepository.java
-│           ├── SpringDataReaderDeviceRepository.java
-│           └── SpringDataTicketRepository.java
-├── interfaces/
-│   └── api/
-│       ├── EntryController.java
-│       ├── GlobalExceptionHandler.java
-│       └── dto/
-│           ├── ProcessEntryAttemptRequest.java
-│           └── ProcessEntryAttemptResponse.java
-└── shared/
-    └── errors/
-        ├── BusinessException.java
-        ├── ErrorCode.java
-        └── TechnicalException.java
+|-- domain/
+|   |-- entities/
+|   |   |-- Ticket.java
+|   |   |-- IntentoIngreso.java
+|   |   |-- RegistroIngreso.java
+|   |   |-- Lector.java
+|   |   |-- SesionEvento.java
+|   |   `-- OcupacionEvento.java
+|   `-- repositories/
+|       |-- TicketRepository.java
+|       |-- IntentoIngresoRepository.java
+|       |-- RegistroIngresoRepository.java
+|       |-- LectorRepository.java
+|       `-- SesionEventoRepository.java
+|
+|-- application/
+|   |-- usecase/
+|   |   |-- ProcesarIntentoIngresoUseCase.java
+|   |   `-- ProcesarIngresoManualUseCase.java
+|   `-- dto/
+|       |-- ProcesarIntentoIngresoRequest.java
+|       |-- ProcesarIntentoIngresoResponse.java
+|       `-- ErrorResponse.java
+|
+|-- infrastructure/
+|   |-- persistence/
+|   |   |-- JpaTicketRepository.java
+|   |   |-- JpaIntentoIngresoRepository.java
+|   |   |-- JpaRegistroIngresoRepository.java
+|   |   |-- JpaLectorRepository.java
+|   |   `-- JpaSesionEventoRepository.java
+|   |-- interfaces/
+|   |   `-- api/
+|   |       `-- IngresoController.java
+|   |-- config/
+|   |   |-- AppConfig.java
+|   |   `-- TransactionConfig.java
+|   `-- concurrency/
+|       |-- TicketConcurrencyPolicy.java
+|       `-- DatabaseLockingStrategy.java
+|
+`-- shared/
+    |-- errors/
+    |   |-- ErrorCode.java
+    |   |-- BusinessException.java
+    |   `-- TechnicalException.java
+    `-- constants/
+        `-- SystemConstants.java
 ```
 
 ---

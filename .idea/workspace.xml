@@ -4,37 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_04_2026_10_46p_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_04_2026_10_46 p_ m__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_03_2026_10_37a_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_03_2026_10_37 a_ m__[Changes]/shelved.patch" beforeDir="false" />
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="plan spec final">
+      <change beforePath="$PROJECT_DIR$/.idea/20261TicketKeeper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/20261TicketKeeper.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec001-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec001-java-clean-complete.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec002-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec002-java-clean-complete.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec003-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec003-java-clean-complete.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec004-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec004-java-clean-complete.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/plan/plan-spec005-java-clean-complete.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/plan/plan-spec005-java-clean-complete.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/dto/ProcessEntryAttemptRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/dto/ProcessEntryAttemptResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/ProcessEntryAttemptUseCase.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessAttempt.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessAttempt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessType.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EventSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EventSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/ReaderDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/ReaderDevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/TicketStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/TicketStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/EntryRecordEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/EntryRecordEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataEntryRecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataEntryRecordRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/shared/errors/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/shared/errors/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/shared/errors/TechnicalException.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/shared/errors/TechnicalException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/spec/spec002-proc-intento-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/spec/spec002-proc-intento-ingreso.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="135" />
+    <option name="cachedIndexableFilesCount" value="111" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -64,13 +38,6 @@
     &quot;accountId&quot;: &quot;fc9bb08e-bab6-434d-9f96-d04182809497&quot;
   }
 }</component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -86,33 +53,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.Ingreso (H2).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.Ingreso (postgres).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.IngresoApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/implementacion-plan-002&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Downloads/ticker_implemented_rest_plans/ticker1&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AcpAgentsConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "feature/implementacion-plan-002",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/user/Desktop/Modulo2/spec",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "ml.llm.AcpAgentsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\user\Desktop\Modulo2\spec" />
@@ -122,7 +86,7 @@
       <recent name="C:\Users\user\Desktop\ticker\docs" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.Ingreso (H2)">
+  <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Modulo2" />
       <method v="2">
@@ -134,32 +98,6 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
-    <configuration name="Ingreso (H2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="ingreso" />
-      <selectedOptions>
-        <option name="environmentVariables" />
-      </selectedOptions>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.empresa.ingreso.IngresoApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Ingreso (postgres)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <option name="ACTIVE_PROFILES" value="postgres" />
-      <envs>
-        <env name="SPRING_DATASOURCE_USERNAME" value="ticker_user" />
-        <env name="SPRING_DATASOURCE_PASSWORD" value="1234" />
-      </envs>
-      <module name="ingreso" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.empresa.ingreso.IngresoApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Spring Boot.Ingreso (H2)" />
-      <item itemvalue="Spring Boot.Ingreso (postgres)" />
-    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -267,31 +205,7 @@
       <option name="project" value="LOCAL" />
       <updated>1776120796285</updated>
     </task>
-    <task id="LOCAL-00011" summary="correccion errores spec y plan">
-      <option name="closed" value="true" />
-      <created>1776406739285</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1776406739285</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Implementacion de plan 002">
-      <option name="closed" value="true" />
-      <created>1776406802762</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1776406802762</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Implementacion de plan 002">
-      <option name="closed" value="true" />
-      <created>1776723288812</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1776723288813</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -332,9 +246,7 @@
     <MESSAGE value="Creación de archivos md 4 últimos specs" />
     <MESSAGE value="feature creacion plan prueba" />
     <MESSAGE value="feature spec 001" />
-    <MESSAGE value="correccion errores spec y plan" />
-    <MESSAGE value="Implementacion de plan 002" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementacion de plan 002" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature spec 001" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
