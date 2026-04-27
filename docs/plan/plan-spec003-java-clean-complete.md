@@ -51,38 +51,42 @@ Principios:
 ## 4. Project Structure
 
 ```text
-src/main/java/com/empresa/ingreso/
+ingreso/src/main/java/com/empresa/ingreso/
 
-├── domain/
-│   ├── entities/
-│   │   ├── Puerta.java
-│   │   ├── CategoriaTicket.java
-│   │   └── AsignacionPuerta.java
-│   └── repositories/
-│       ├── PuertaRepository.java
-│       ├── CategoriaRepository.java
-│       └── AsignacionRepository.java
-
+├── IngresoApplication.java
 ├── application/
-│   ├── usecase/
-│   │   ├── AsignarPuertaUseCase.java
-│   │   └── ReasignarPuertaUseCase.java
-│   └── dto/
-│       ├── AsignarPuertaRequest.java
-│       └── AsignarPuertaResponse.java
-
+│   ├── port/
+│   │   ├── in/
+│   │   │   ├── AssignGateCommand.java
+│   │   │   ├── AssignGateResult.java
+│   │   │   └── AssignGateUseCase.java
+│   │   └── out/
+│   │       ├── LoadGateAssignmentPort.java
+│   │       ├── PublishGateAssignmentPort.java
+│   │       └── SaveGateAssignmentPort.java
+│   └── usecase/
+│       └── DefaultAssignGateUseCase.java
+├── domain/
+│   └── model/
+│       └── GateAssignment.java
 ├── infrastructure/
-│   ├── persistence/
-│   │   ├── JpaPuertaRepository.java
-│   │   ├── JpaCategoriaRepository.java
-│   │   └── JpaAsignacionRepository.java
-│   ├── interfaces/
-│   │   └── api/
-│   │       └── PuertaController.java
-│   ├── messaging/
-│   │   └── AsignacionPublisher.java
-│   └── config/
-│       └── AppConfig.java
+│   └── persistence/
+│       ├── PersistenceAdapter.java
+│       ├── entity/
+│       │   └── GateAssignmentEntity.java
+│       └── repository/
+│           └── SpringDataGateAssignmentRepository.java
+├── interfaces/
+│   └── api/
+│       ├── GateAssignmentController.java
+│       └── dto/
+│           ├── AssignGateRequest.java
+│           └── AssignGateResponse.java
+└── shared/
+    └── errors/
+        ├── BusinessException.java
+        ├── ErrorCode.java
+        └── TechnicalException.java
 ```
 
 ---

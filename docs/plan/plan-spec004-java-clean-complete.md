@@ -44,42 +44,57 @@ Principios:
 ## 4. Project Structure
 
 ```text
-src/main/java/com/empresa/ingreso/
+ingreso/src/main/java/com/empresa/ingreso/
 
-├── domain/
-│   ├── entities/
-│   │   ├── Ticket.java
-│   │   ├── IntentoIngreso.java
-│   │   ├── Evento.java
-│   │   └── RegistroSalida.java
-│   └── repositories/
-│       ├── TicketRepository.java
-│       ├── IntentoIngresoRepository.java
-│       ├── EventoRepository.java
-│       └── SalidaRepository.java
-
+├── IngresoApplication.java
 ├── application/
-│   ├── usecase/
-│   │   ├── RegistrarReingresoUseCase.java
-│   │   └── RegistrarSalidaUseCase.java
-│   └── dto/
-│       ├── ReingresoRequest.java
-│       ├── ReingresoResponse.java
-│       └── ErrorResponse.java
-
+│   ├── port/
+│   │   ├── in/
+│   │   │   ├── ReEntryCommand.java
+│   │   │   ├── ReEntryResult.java
+│   │   │   ├── ReEntryUseCase.java
+│   │   │   ├── RegisterExitCommand.java
+│   │   │   ├── RegisterExitResult.java
+│   │   │   └── RegisterExitUseCase.java
+│   │   └── out/
+│   │       ├── LoadEntryRecordPort.java
+│   │       ├── LoadTicketPort.java
+│   │       ├── SaveAccessAttemptPort.java
+│   │       ├── SaveEntryRecordPort.java
+│   │       └── SaveTicketPort.java
+│   └── usecase/
+│       ├── DefaultReEntryUseCase.java
+│       └── DefaultRegisterExitUseCase.java
+├── domain/
+│   └── model/
+│       ├── AccessAttempt.java
+│       ├── EntryRecord.java
+│       ├── Ticket.java
+│       └── TicketStatus.java
 ├── infrastructure/
-│   ├── persistence/
-│   │   ├── JpaTicketRepository.java
-│   │   ├── JpaIntentoIngresoRepository.java
-│   │   ├── JpaEventoRepository.java
-│   │   └── JpaSalidaRepository.java
-│   ├── interfaces/
-│   │   └── api/
-│   │       └── ReingresoController.java
-│   ├── concurrency/
-│   │   └── TicketLockManager.java
-│   └── config/
-│       └── AppConfig.java
+│   └── persistence/
+│       ├── PersistenceAdapter.java
+│       ├── entity/
+│       │   ├── AccessAttemptEntity.java
+│       │   ├── EntryRecordEntity.java
+│       │   └── TicketEntity.java
+│       └── repository/
+│           ├── SpringDataAccessAttemptRepository.java
+│           ├── SpringDataEntryRecordRepository.java
+│           └── SpringDataTicketRepository.java
+├── interfaces/
+│   └── api/
+│       ├── ReEntryController.java
+│       └── dto/
+│           ├── ReEntryRequest.java
+│           ├── ReEntryResponse.java
+│           ├── RegisterExitRequest.java
+│           └── RegisterExitResponse.java
+└── shared/
+    └── errors/
+        ├── BusinessException.java
+        ├── ErrorCode.java
+        └── TechnicalException.java
 ```
 
 ---

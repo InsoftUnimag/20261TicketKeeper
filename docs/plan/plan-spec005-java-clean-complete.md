@@ -44,38 +44,48 @@ Principios:
 ## 4. Project Structure
 
 ```text
-src/main/java/com/empresa/ingreso/
+ingreso/src/main/java/com/empresa/ingreso/
 
-├── domain/
-│   ├── entities/
-│   │   ├── RegistroIngreso.java
-│   │   ├── Ticket.java
-│   │   └── Evento.java
-│   └── repositories/
-│       ├── RegistroIngresoRepository.java
-│       ├── TicketRepository.java
-│       └── EventoRepository.java
-
+├── IngresoApplication.java
 ├── application/
-│   ├── usecase/
-│   │   ├── ConsultarRegistroPorTicketUseCase.java
-│   │   └── ConsultarRegistrosPorEventoUseCase.java
-│   └── dto/
-│       ├── ConsultaTicketRequest.java
-│       ├── ConsultaTicketResponse.java
-│       ├── ConsultaEventoResponse.java
-│       └── ErrorResponse.java
-
+│   ├── port/
+│   │   ├── in/
+│   │   │   ├── GetEntryRecordByTicketResult.java
+│   │   │   ├── GetEntryRecordByTicketUseCase.java
+│   │   │   └── GetEntryRecordsByEventUseCase.java
+│   │   └── out/
+│   │       ├── LoadEntryRecordPort.java
+│   │       ├── LoadEventSessionPort.java
+│   │       └── LoadTicketPort.java
+│   └── usecase/
+│       ├── DefaultGetEntryRecordByTicketUseCase.java
+│       └── DefaultGetEntryRecordsByEventUseCase.java
+├── domain/
+│   └── model/
+│       ├── EntryRecord.java
+│       ├── EventSession.java
+│       └── Ticket.java
 ├── infrastructure/
-│   ├── persistence/
-│   │   ├── JpaRegistroIngresoRepository.java
-│   │   ├── JpaTicketRepository.java
-│   │   └── JpaEventoRepository.java
-│   ├── interfaces/
-│   │   └── api/
-│   │       └── ConsultaRegistroController.java
-│   └── config/
-│       └── AppConfig.java
+│   └── persistence/
+│       ├── PersistenceAdapter.java
+│       ├── entity/
+│       │   ├── EntryRecordEntity.java
+│       │   ├── EventSessionEntity.java
+│       │   └── TicketEntity.java
+│       └── repository/
+│           ├── SpringDataEntryRecordRepository.java
+│           ├── SpringDataEventSessionRepository.java
+│           └── SpringDataTicketRepository.java
+├── interfaces/
+│   └── api/
+│       ├── EntryRecordQueryController.java
+│       └── dto/
+│           └── EntryRecordResponse.java
+└── shared/
+    └── errors/
+        ├── BusinessException.java
+        ├── ErrorCode.java
+        └── TechnicalException.java
 ```
 
 ---

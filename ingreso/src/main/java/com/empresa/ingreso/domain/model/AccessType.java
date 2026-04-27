@@ -1,5 +1,7 @@
 package com.empresa.ingreso.domain.model;
 
 public enum AccessType {
-    ENTRY
+    ENTRY,
+    RE_ENTRY,
+    EXIT
 }
