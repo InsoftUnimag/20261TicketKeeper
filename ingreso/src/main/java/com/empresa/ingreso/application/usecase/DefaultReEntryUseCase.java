@@ -56,7 +56,7 @@ public class DefaultReEntryUseCase implements ReEntryUseCase {
         if (!ticket.canRegisterReEntry()) return reject(now, command, ticket.id(), ErrorCode.REINGRESO_NO_PERMITIDO, "Reingreso no permitido", used);
         if (loadEventSessionPort.findEventSessionById(command.sessionId()).isEmpty()) return reject(now, command, ticket.id(), ErrorCode.EVENTO_NO_ENCONTRADO, "Evento no encontrado", used);
         if (used >= DEFAULT_REENTRY_LIMIT) return reject(now, command, ticket.id(), ErrorCode.LIMITE_REINGRESO_EXCEDIDO, "Limite de reingresos excedido", used);
-        saveEntryRecordPort.save(new EntryRecord(ticket.id(), command.sessionId(), command.gateId(), AccessType.RE_ENTRY, now));
+        saveEntryRecordPort.save(new EntryRecord(null, ticket.id(), command.sessionId(), command.gateId(), AccessType.RE_ENTRY, now));
         saveTicketPort.save(ticket.markEntered());
         persist(now, command, ticket.id(), AttemptResult.APPROVED, null);
         return new ReEntryResult("APPROVED", "Reingreso autorizado", null, used + 1, DEFAULT_REENTRY_LIMIT);

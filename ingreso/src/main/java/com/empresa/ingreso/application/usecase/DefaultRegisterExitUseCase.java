@@ -50,7 +50,7 @@ public class DefaultRegisterExitUseCase implements RegisterExitUseCase {
             persist(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.SALIDA_NO_PERMITIDA);
             return new RegisterExitResult("REJECTED", "Salida no permitida", ErrorCode.SALIDA_NO_PERMITIDA);
         }
-        saveEntryRecordPort.save(new EntryRecord(ticket.id(), command.sessionId(), command.gateId(), AccessType.EXIT, now));
+        saveEntryRecordPort.save(new EntryRecord(null, ticket.id(), command.sessionId(), command.gateId(), AccessType.EXIT, now));
         saveTicketPort.save(ticket.markExited());
         persist(now, command, ticket.id(), AttemptResult.APPROVED, null);
         return new RegisterExitResult("APPROVED", "Salida registrada", null);

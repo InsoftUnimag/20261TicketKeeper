@@ -37,6 +37,7 @@ public class EntryRecordPersistenceAdapter implements LoadEntryRecordPort, SaveE
     @Override
     public EntryRecord save(EntryRecord entryRecord) {
         EntryRecordEntity entity = new EntryRecordEntity();
+        entity.setId(entryRecord.id());
         entity.setTicketId(entryRecord.ticketId());
         entity.setEventId(entryRecord.eventId());
         entity.setGateId(entryRecord.gateId());
@@ -47,6 +48,7 @@ public class EntryRecordPersistenceAdapter implements LoadEntryRecordPort, SaveE
 
     private EntryRecord toDomain(EntryRecordEntity entity) {
         return new EntryRecord(
+                entity.getId(),
                 entity.getTicketId(),
                 entity.getEventId(),
                 entity.getGateId(),

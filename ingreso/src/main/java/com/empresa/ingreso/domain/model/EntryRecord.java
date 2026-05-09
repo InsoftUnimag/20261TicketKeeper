@@ -3,6 +3,7 @@ package com.empresa.ingreso.domain.model;
 import java.time.OffsetDateTime;
 
 public record EntryRecord(
+        Long id,
         Long ticketId,
         Long eventId,
         Long gateId,
@@ -10,6 +11,9 @@ public record EntryRecord(
         OffsetDateTime enteredAt
 ) {
     public EntryRecord {
+        if (id != null && id <= 0) {
+            throw new IllegalArgumentException("id must be greater than zero");
+        }
         validatePositive(ticketId, "ticketId");
         validatePositive(eventId, "eventId");
         validatePositive(gateId, "gateId");

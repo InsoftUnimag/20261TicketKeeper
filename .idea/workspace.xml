@@ -4,11 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Implementacion all plans">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="refactor super class to 7 classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/PersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/PersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/PersistenceAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/GateAssignmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/GateAssignmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/ReEntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/ReEntryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +39,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="95" />
+    <option name="cachedIndexableFilesCount" value="108" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -64,6 +86,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
@@ -92,6 +118,7 @@
       <recent name="C:\Users\user\Desktop\Modulo2\spec" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Downloads\ticker_implemented_rest_plans\ticker1\docs\swagger" />
       <recent name="C:\Users\user\Desktop\ticker\docs\plan" />
       <recent name="C:\Users\user\Desktop\ticker\docs" />
     </key>
@@ -120,6 +147,7 @@
     <attachedChunks>
       <set>
         <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>
@@ -141,6 +169,16 @@
       <workItem from="1771884063946" duration="54000" />
       <workItem from="1771884254635" duration="4283000" />
       <workItem from="1771889911434" duration="708000" />
+      <workItem from="1777731083439" duration="2175000" />
+      <workItem from="1777824475466" duration="92000" />
+      <workItem from="1777926191332" duration="1082000" />
+      <workItem from="1777927308125" duration="7847000" />
+      <workItem from="1778027490118" duration="597000" />
+      <workItem from="1778035957920" duration="1252000" />
+      <workItem from="1778118018273" duration="1000" />
+      <workItem from="1778275100660" duration="47000" />
+      <workItem from="1778324884015" duration="4147000" />
+      <workItem from="1778333124921" duration="2200000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -222,7 +260,23 @@
       <option name="project" value="LOCAL" />
       <updated>1776120796285</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Implementacion final plans">
+      <option name="closed" value="true" />
+      <created>1777123759646</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1777123759646</updated>
+    </task>
+    <task id="LOCAL-00012" summary="refactor super class to 7 classes">
+      <option name="closed" value="true" />
+      <created>1777928288040</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1777928288040</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +317,9 @@
     <MESSAGE value="Creación de archivos md 4 últimos specs" />
     <MESSAGE value="feature creacion plan prueba" />
     <MESSAGE value="feature spec 001" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature spec 001" />
+    <MESSAGE value="Implementacion final plans" />
+    <MESSAGE value="refactor super class to 7 classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor super class to 7 classes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

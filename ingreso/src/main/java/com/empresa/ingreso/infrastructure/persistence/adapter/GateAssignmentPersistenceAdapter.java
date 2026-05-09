@@ -1,7 +1,6 @@
 package com.empresa.ingreso.infrastructure.persistence.adapter;
 
 import com.empresa.ingreso.application.port.out.LoadGateAssignmentPort;
-import com.empresa.ingreso.application.port.out.PublishGateAssignmentPort;
 import com.empresa.ingreso.application.port.out.SaveGateAssignmentPort;
 import com.empresa.ingreso.domain.model.GateAssignment;
 import com.empresa.ingreso.infrastructure.persistence.entity.GateAssignmentEntity;
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GateAssignmentPersistenceAdapter implements
         LoadGateAssignmentPort,
-        SaveGateAssignmentPort,
-        PublishGateAssignmentPort {
+        SaveGateAssignmentPort {
 
     private final SpringDataGateAssignmentRepository gateAssignmentRepository;
 
@@ -47,11 +45,6 @@ public class GateAssignmentPersistenceAdapter implements
         entity.setZone(assignment.zone());
         entity.setActive(assignment.active());
         return toDomain(gateAssignmentRepository.save(entity));
-    }
-
-    @Override
-    public void publish(GateAssignment assignment) {
-        // No-op: publication is outside the current persistence scope.
     }
 
     private GateAssignment toDomain(GateAssignmentEntity entity) {
