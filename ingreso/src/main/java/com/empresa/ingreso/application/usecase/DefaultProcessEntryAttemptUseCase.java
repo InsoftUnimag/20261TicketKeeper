@@ -120,6 +120,7 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
             }
 
             saveEntryRecordPort.save(new EntryRecord(
+                    null,
                     ticket.id(),
                     command.sessionId(),
                     command.gateId(),
