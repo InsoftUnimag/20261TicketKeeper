@@ -4,35 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="refactor super class to 7 classes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/PersistenceAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/GateAssignmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/GateAssignmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/ReEntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/ReEntryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="finish backend" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -178,7 +150,7 @@
       <workItem from="1778118018273" duration="1000" />
       <workItem from="1778275100660" duration="47000" />
       <workItem from="1778324884015" duration="4147000" />
-      <workItem from="1778333124921" duration="2200000" />
+      <workItem from="1778333124921" duration="2529000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -276,7 +248,23 @@
       <option name="project" value="LOCAL" />
       <updated>1777928288040</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="finish backend">
+      <option name="closed" value="true" />
+      <created>1778337142020</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1778337142020</updated>
+    </task>
+    <task id="LOCAL-00014" summary="finish backend">
+      <option name="closed" value="true" />
+      <created>1778337167043</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1778337167043</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,7 +307,8 @@
     <MESSAGE value="feature spec 001" />
     <MESSAGE value="Implementacion final plans" />
     <MESSAGE value="refactor super class to 7 classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor super class to 7 classes" />
+    <MESSAGE value="finish backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish backend" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
