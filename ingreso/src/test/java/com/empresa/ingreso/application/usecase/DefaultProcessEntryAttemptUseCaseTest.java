@@ -10,10 +10,10 @@ import static org.mockito.Mockito.lenient;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptCommand;
 import com.empresa.ingreso.application.port.out.LoadEventSessionPort;
 import com.empresa.ingreso.application.port.out.LoadReaderDevicePort;
-import com.empresa.ingreso.application.port.out.LoadTicketPort;
 import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
 import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
 import com.empresa.ingreso.application.port.out.SaveTicketPort;
+import com.empresa.ingreso.application.service.Modulo1TicketImportService;
 import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.AccessChannel;
 import com.empresa.ingreso.domain.model.EventSession;
@@ -36,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DefaultProcessEntryAttemptUseCaseTest {
 
     @Mock LoadReaderDevicePort readerRepo;
-    @Mock LoadTicketPort ticketRepo;
+    @Mock Modulo1TicketImportService modulo1TicketImportService;
     @Mock SaveTicketPort saveTicketPort;
     @Mock LoadEventSessionPort sessionRepo;
     @Mock SaveAccessAttemptPort attemptRepo;
@@ -68,7 +68,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
         Clock fixed = Clock.fixed(Instant.parse("2026-04-17T12:00:00Z"), ZoneOffset.UTC);
         useCase = new DefaultProcessEntryAttemptUseCase(
                 readerRepo,
-                ticketRepo,
+                modulo1TicketImportService,
                 saveTicketPort,
                 sessionRepo,
                 attemptRepo,
@@ -87,14 +87,14 @@ class DefaultProcessEntryAttemptUseCaseTest {
         assertThat(res.status()).isEqualTo("REJECTED");
         assertThat(res.errorCode()).isEqualTo(ErrorCode.LECTOR_NO_CONFIGURADO);
         assertThat(res.attemptId()).isNotNull();
-        verify(ticketRepo, never()).findByCodeForUpdate(any());
+        verify(modulo1TicketImportService, never()).resolveForSession(any(), any());
     }
 
     @Test
     void rejects_when_ticket_not_found() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("NOPE", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("NOPE")).thenReturn(Optional.empty());
+        when(modulo1TicketImportService.resolveForSession("NOPE", 30L)).thenReturn(Optional.empty());
 
         var res = useCase.execute(req);
 
@@ -106,7 +106,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void rejects_when_ticket_status_invalid() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.CANCELED, 30L, "A", false)));
+        when(modulo1TicketImportService.resolveForSession("T1", 30L)).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.CANCELED, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
@@ -118,7 +118,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void rejects_when_session_invalid() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 999L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(modulo1TicketImportService.resolveForSession("T1", 999L)).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
@@ -130,7 +130,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void rejects_when_zone_incorrect() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "B")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(modulo1TicketImportService.resolveForSession("T1", 30L)).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
         when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);
@@ -143,7 +143,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void rejects_when_ticket_duplicate() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ENTERED, 30L, "A", true)));
+        when(modulo1TicketImportService.resolveForSession("T1", 30L)).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ENTERED, 30L, "A", true)));
 
         var res = useCase.execute(req);
 
@@ -155,7 +155,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     void approves_when_all_validations_pass() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.MANUAL);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(modulo1TicketImportService.resolveForSession("T1", 30L)).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
         when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);

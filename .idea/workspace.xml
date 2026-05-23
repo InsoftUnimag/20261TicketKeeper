@@ -4,14 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="finish backend" />
+    <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Conexion modulo 1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/TicketPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/TicketPersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/test/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="108" />
+    <option name="cachedIndexableFilesCount" value="114" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -81,7 +104,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AcpAgentsConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JAVA&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -150,7 +173,17 @@
       <workItem from="1778118018273" duration="1000" />
       <workItem from="1778275100660" duration="47000" />
       <workItem from="1778324884015" duration="4147000" />
-      <workItem from="1778333124921" duration="3005000" />
+      <workItem from="1778333124921" duration="3201000" />
+      <workItem from="1778340538777" duration="23000" />
+      <workItem from="1778343986555" duration="1180000" />
+      <workItem from="1778346213064" duration="112000" />
+      <workItem from="1778803536530" duration="10000" />
+      <workItem from="1778938282112" duration="1923000" />
+      <workItem from="1779229208517" duration="41000" />
+      <workItem from="1779479427476" duration="5789000" />
+      <workItem from="1779490385248" duration="4795000" />
+      <workItem from="1779544154758" duration="4544000" />
+      <workItem from="1779562483671" duration="881000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -272,7 +305,31 @@
       <option name="project" value="LOCAL" />
       <updated>1778337278314</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="finish backend">
+      <option name="closed" value="true" />
+      <created>1778337786758</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1778337786758</updated>
+    </task>
+    <task id="LOCAL-00017" summary="guia conexion">
+      <option name="closed" value="true" />
+      <created>1779479919292</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1779479919292</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Conexion modulo 1">
+      <option name="closed" value="true" />
+      <created>1779562654085</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1779562654085</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -316,7 +373,9 @@
     <MESSAGE value="Implementacion final plans" />
     <MESSAGE value="refactor super class to 7 classes" />
     <MESSAGE value="finish backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish backend" />
+    <MESSAGE value="guia conexion" />
+    <MESSAGE value="Conexion modulo 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Conexion modulo 1" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

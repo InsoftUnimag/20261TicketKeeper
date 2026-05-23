@@ -38,6 +38,10 @@ public class TicketPersistenceAdapter implements LoadTicketPort, LoadTicketByCod
         entity.setAllowedZone(ticket.allowedZone());
         entity.setSessionId(ticket.sessionId());
         entity.setUsed(ticket.used());
+        entity.setExternalTicketId(ticket.externalTicketId());
+        entity.setExternalEventId(ticket.externalEventId());
+        entity.setSeatNumber(ticket.seatNumber());
+        entity.setReEntryAllowed(ticket.reEntryAllowed());
         return toDomain(ticketRepository.save(entity));
     }
 
@@ -49,7 +53,11 @@ public class TicketPersistenceAdapter implements LoadTicketPort, LoadTicketByCod
                 entity.getCategory(),
                 entity.getAllowedZone(),
                 entity.getSessionId(),
-                entity.isUsed()
+                entity.isUsed(),
+                entity.getExternalTicketId(),
+                entity.getExternalEventId(),
+                entity.getSeatNumber(),
+                entity.isReEntryAllowed()
         );
     }
 }

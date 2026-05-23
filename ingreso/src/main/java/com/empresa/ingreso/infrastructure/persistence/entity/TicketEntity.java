@@ -42,4 +42,14 @@ public class TicketEntity {
 
     @Column(nullable = false)
     private boolean used;
+
+    @Column(unique = true)
+    private String externalTicketId;
+
+    private String externalEventId;
+
+    private String seatNumber;
+
+    @Column(nullable = false)
+    private boolean reEntryAllowed;
 }

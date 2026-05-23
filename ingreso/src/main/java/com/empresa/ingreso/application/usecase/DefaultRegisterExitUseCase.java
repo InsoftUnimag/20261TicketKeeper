@@ -3,10 +3,10 @@ package com.empresa.ingreso.application.usecase;
 import com.empresa.ingreso.application.port.in.RegisterExitCommand;
 import com.empresa.ingreso.application.port.in.RegisterExitResult;
 import com.empresa.ingreso.application.port.in.RegisterExitUseCase;
-import com.empresa.ingreso.application.port.out.LoadTicketPort;
 import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
 import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
 import com.empresa.ingreso.application.port.out.SaveTicketPort;
+import com.empresa.ingreso.application.service.Modulo1TicketImportService;
 import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.AccessType;
 import com.empresa.ingreso.domain.model.AttemptResult;
@@ -21,26 +21,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DefaultRegisterExitUseCase implements RegisterExitUseCase {
-    private final LoadTicketPort loadTicketPort;
+    private final Modulo1TicketImportService modulo1TicketImportService;
     private final SaveTicketPort saveTicketPort;
     private final SaveAccessAttemptPort saveAccessAttemptPort;
     private final SaveEntryRecordPort saveEntryRecordPort;
     private final Clock clock;
 
     @Autowired
-    public DefaultRegisterExitUseCase(LoadTicketPort loadTicketPort, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
-        this(loadTicketPort, saveTicketPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
+    public DefaultRegisterExitUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
+        this(modulo1TicketImportService, saveTicketPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
     }
 
-    DefaultRegisterExitUseCase(LoadTicketPort loadTicketPort, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
-        this.loadTicketPort = loadTicketPort; this.saveTicketPort = saveTicketPort; this.saveAccessAttemptPort = saveAccessAttemptPort; this.saveEntryRecordPort = saveEntryRecordPort; this.clock = clock;
+    DefaultRegisterExitUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
+        this.modulo1TicketImportService = modulo1TicketImportService; this.saveTicketPort = saveTicketPort; this.saveAccessAttemptPort = saveAccessAttemptPort; this.saveEntryRecordPort = saveEntryRecordPort; this.clock = clock;
     }
 
     @Override
     @Transactional
     public RegisterExitResult execute(RegisterExitCommand command) {
         OffsetDateTime now = OffsetDateTime.now(clock);
-        var maybeTicket = loadTicketPort.findByCodeForUpdate(command.ticketCode());
+        var maybeTicket = modulo1TicketImportService.resolveForSession(command.ticketCode(), command.sessionId());
         if (maybeTicket.isEmpty()) {
             persist(now, command, null, AttemptResult.REJECTED, ErrorCode.TICKET_NO_ENCONTRADO);
             return new RegisterExitResult("REJECTED", "Ticket no encontrado", ErrorCode.TICKET_NO_ENCONTRADO);
