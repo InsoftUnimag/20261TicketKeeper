@@ -1,155 +1,269 @@
 # Implementation Plan: Frontend de Operacion de Ingreso
 
-**Date**: 2026-05-09
+**Updated**: 2026-05-23
 **Spec**: `docs/frontend-doc/spec-frontend-operacion-ingreso.md`
 
 ---
 
 ## 1. Summary
 
-Se implementara un frontend operativo dentro del repo para consumir la API de ingreso ya disponible. El objetivo inicial no es administrar todo el sistema, sino ofrecer una consola de pruebas y operacion con formularios claros para consulta de ticket, ingreso, salida, reingreso y asignacion de puerta.
+Se implementara un frontend operativo dentro del repo para consumir la API ya disponible en `ingreso/`. El objetivo es reemplazar el uso manual de Swagger en los flujos principales de ingreso con una consola unica, utilitaria y rapida de operar.
 
-El frontend debe servir para reemplazar las pruebas manuales en Swagger en los flujos mas importantes, usando datos semilla y mostrando de forma clara respuestas exitosas y errores funcionales.
+La app frontend no existe aun. La propuesta alineada al estado actual del proyecto es crear `ticker1/frontend/` como app React + Vite + TypeScript, separada del backend Spring Boot.
 
 ---
 
 ## 2. Technical Context
 
-**Language/Version**: TypeScript  
-**Primary Dependencies**: React, Vite, cliente HTTP liviano (`fetch` nativo o `axios`)  
-**Storage**: N/A  
-**Testing**: pruebas manuales iniciales; opcionalmente Vitest mas adelante  
+**Backend existente**: Spring Boot 3.5.x en `ingreso/`  
+**Language/Version**: TypeScript 5.x  
+**Primary Dependencies**: React 18, Vite 5, `fetch` nativo, opcionalmente `zod` solo para parsing defensivo del lado UI  
+**Storage**: sin persistencia propia en frontend; solo estado en memoria  
+**Testing**: Vitest + React Testing Library para componentes criticos; smoke manual contra backend local  
 **Target Platform**: navegador web en entorno local  
-**Project Type**: aplicacion web separada dentro del repo  
-**Performance Goals**: interaccion fluida y respuestas visibles en menos de 1 segundo despues del retorno del backend  
-**Constraints**: backend corre en `localhost`, CORS ya configurado para `3000` y `5173`, debe ser utilitario y no marketing  
-**Scale/Scope**: 1 app web, 5 vistas funcionales o 1 dashboard con 5 modulos operativos
+**Project Type**: SPA separada, hermana del backend  
+**Performance Goals**: interfaz lista para operar en una sola pantalla, sin navegacion profunda  
+**Constraints**:
+- backend por defecto en `http://localhost:8083`
+- CORS habilitado para `http://localhost:3000` y `http://localhost:5173`
+- la API mezcla respuestas funcionales con shapes distintos segun endpoint y tipo de error
+- no duplicar reglas de negocio del backend
 
 ---
 
-## 3. Architecture Approach
+## 3. Current-State Findings
 
-Frontend React/Vite con estructura simple:
+Hallazgos que obligan a ajustar la documentacion original:
 
-- `pages` o una vista principal con secciones operativas
-- `components` para formularios y paneles de respuesta
-- `services` para encapsular llamadas HTTP
-- `types` para tipar requests y responses de la API
-
-El frontend no debe duplicar reglas de negocio del backend. Solo valida formato basico y presenta respuestas.
+1. El repo actual solo contiene el backend `ingreso/`; no hay `frontend/` creado todavia.
+2. El puerto local real del backend es `8083`, no un valor implicito generico.
+3. `GET /api/v1/tickets/{ticketCode}/status` devuelve `200` incluso para ticket inexistente, con `status = NOT_FOUND`.
+4. `POST /api/v1/entry-attempts` devuelve `201` tanto para aprobacion como para rechazo funcional; el frontend debe leer el payload, no solo el HTTP status.
+5. Los errores de `BusinessException` y validacion salen con shape `{ timestamp, message, errorCode }`, diferente al shape de las respuestas felices.
+6. Existen datos seed utiles para presets: tickets fijos y puertas `101/102/103`, pero `sessionId` y `readerId` pueden depender de IDs autogenerados.
 
 ---
 
-## 4. Project Structure
+## 4. Architecture Approach
+
+SPA React/Vite con una sola vista principal tipo dashboard operativo. La pantalla inicial mostrara modulos paralelos para:
+
+- consulta de ticket
+- ingreso inicial
+- salida
+- reingreso
+- asignacion de puerta
+
+Capas sugeridas:
+
+- `src/app/`: bootstrap, layout y estilos globales
+- `src/features/access/`: formularios de ingreso, salida y reingreso
+- `src/features/ticket-status/`: consulta de estado
+- `src/features/gate-assignment/`: asignacion de puerta
+- `src/shared/api/`: cliente HTTP, normalizacion de respuestas y configuracion de base URL
+- `src/shared/ui/`: paneles, campos, botones y badges reutilizables
+- `src/shared/types/`: tipos del backend y view models
+
+Decisiones:
+
+- usar `fetch` y una capa pequena de normalizacion para mantener bajo el acoplamiento
+- no introducir router en la primera iteracion; una sola pantalla es suficiente
+- no derivar reglas de aprobacion desde el frontend; solo renderizar lo retornado por la API
+
+---
+
+## 5. Proposed Project Structure
 
 ```text
 ticker1/
-├── docs/
-│   └── frontend-doc/
-│       ├── plan-frontend-operacion-ingreso.md
-│       └── spec-frontend-operacion-ingreso.md
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── types/
-│   │   └── main.tsx
-│   └── package.json
-└── ingreso/
-    └── ...
+|-- docs/
+|   `-- frontend-doc/
+|       |-- plan-frontend-operacion-ingreso.md
+|       `-- spec-frontend-operacion-ingreso.md
+|-- frontend/
+|   |-- package.json
+|   |-- vite.config.ts
+|   |-- tsconfig.json
+|   |-- .env.example
+|   `-- src/
+|       |-- app/
+|       |-- features/
+|       |-- shared/
+|       `-- main.tsx
+`-- ingreso/
+    |-- pom.xml
+    `-- src/
 ```
 
-**Structure Decision**: usar `frontend/` sin espacios para evitar problemas con scripts, tooling y rutas.
+**Structure Decision**: mantener `frontend/` como sibling de `ingreso/` evita mezclar Maven y Vite, y ya encaja con la configuracion CORS existente.
 
 ---
 
-## 5. Phase 1: Setup
+## 6. API Contracts To Reflect In UI
 
-- Crear app en `ticker1/frontend`
-- Configurar Vite con React y TypeScript
-- Definir URL base del backend por variable de entorno
-- Configurar estructura base de carpetas
+### Ticket status
 
----
+- `GET /api/v1/tickets/{ticketCode}/status`
+- payload exitoso o funcional:
+  - `status`
+  - `message`
+  - `errorCode`
+  - `ticketStatus`
+  - `ticketCode`
+  - `sessionId`
+  - `gateId`
+  - `entryAt`
 
-## 6. Phase 2: Foundational
+### Entry attempt
 
-- Crear cliente HTTP para la API de ingreso
-- Tipar DTOs minimos necesarios
-- Crear layout principal de operacion
-- Crear componente reutilizable para mostrar respuestas y errores
-- Definir datos semilla sugeridos visibles en la UI para pruebas rapidas
+- `POST /api/v1/entry-attempts`
+- request:
+  - `ticketCode`
+  - `readerId`
+  - `gateId`
+  - `sessionId`
+  - `channel: QR | MANUAL`
+- response:
+  - `status`
+  - `message`
+  - `errorCode`
+  - `attemptId`
 
----
+### Exit
 
-## 7. Phase 3: User Story 1 - Consulta de ticket (P1)
+- `POST /api/v1/access-flow/exits`
+- request igual a entry attempt
+- response:
+  - `status`
+  - `message`
+  - `errorCode`
 
-**Goal**: consultar estado de un ticket desde una interfaz simple.
+### Re-entry
 
-**Independent Test**: buscar `TICKET-ACTIVE-NORTH` y visualizar la respuesta de `GET /api/v1/tickets/{ticketCode}/status`.
+- `POST /api/v1/access-flow/re-entries`
+- request igual a entry attempt
+- response:
+  - `status`
+  - `message`
+  - `errorCode`
+  - `reEntriesUsed`
+  - `reEntryLimit`
 
-- Implementar formulario de consulta por `ticketCode`
-- Consumir endpoint de estado
-- Mostrar `ticketStatus`, `sessionId`, `gateId`, `entryAt`, `message` y `errorCode`
+### Gate assignment
 
----
+- `POST /api/v1/gate-assignments`
+- request:
+  - `sessionId`
+  - `gateId`
+  - `ticketCategory`
+  - `zone`
+- response:
+  - `status`
+  - `message`
+  - `assignmentId`
 
-## 8. Phase 4: User Story 2 - Ingreso inicial (P1)
+### Error normalization required
 
-**Goal**: registrar intentos de ingreso y visualizar aprobacion o rechazo.
+La UI debe convertir estas variantes a un modelo comun para render:
 
-**Independent Test**: enviar un ticket semilla valido y ver el resultado del backend.
-
-- Implementar formulario de intento de ingreso
-- Consumir `POST /api/v1/entry-attempts`
-- Mostrar payload de respuesta en un panel consistente
-
----
-
-## 9. Phase 5: User Story 3 - Salida y reingreso (P2)
-
-**Goal**: operar el flujo completo de acceso.
-
-**Independent Test**: registrar salida de un ticket compatible y luego intentar reingreso.
-
-- Implementar formulario de salida
-- Implementar formulario de reingreso
-- Reutilizar componente base de operacion
-
----
-
-## 10. Phase 6: User Story 4 - Asignacion de puerta (P3)
-
-**Goal**: permitir configuracion operativa desde UI.
-
-**Independent Test**: crear una asignacion valida usando una sesion existente del seed.
-
-- Implementar formulario de asignacion de puerta
-- Mostrar conflictos y errores de sesion inexistente
-
----
-
-## 11. Phase 7: Polish
-
-- Ajustar textos y validaciones del formulario
-- Mostrar ejemplos de datos semilla para prueba rapida
-- Agregar `README` del frontend con instrucciones de arranque
-- Verificar estilos responsive de escritorio y mobile
-
----
-
-## 12. Notes
-
-- El frontend debe empezar como herramienta operativa, no como portal corporativo.
-- La primera version puede resolverse en una sola pantalla con modulos plegables o tabs.
-- Los ejemplos visibles al usuario deben usar datos semilla reales, no valores ficticios como `42`.
-- El backend ya expone CORS para puertos tipicos de desarrollo local.
+- respuesta funcional del endpoint
+- rechazo funcional con `status` en payload
+- error de validacion o negocio con `{ timestamp, message, errorCode }`
+- error tecnico de red o `500`
 
 ---
 
-## 13. Success Criteria
+## 7. Delivery Phases
 
-- La app frontend levanta localmente y se conecta al backend sin tocar Swagger.
-- Un operador puede ejecutar al menos consulta de ticket e ingreso inicial en la primera iteracion.
-- Los errores funcionales de la API se entienden desde UI sin inspeccionar logs.
+## Phase 1 - Bootstrap
+
+- Crear `frontend/` con Vite + React + TypeScript
+- Configurar `.env.example` con `VITE_API_BASE_URL=http://localhost:8083`
+- Definir scripts base: `dev`, `build`, `preview`, `test`
+- Agregar `README.md` del frontend con arranque local junto al backend
+
+## Phase 2 - Foundations
+
+- Implementar cliente HTTP y helper `parseApiResult`
+- Tipar DTOs alineados a los controllers actuales
+- Crear layout principal de consola operativa
+- Crear `ResultPanel` reutilizable con estados `success`, `functional-error`, `technical-error`, `loading`
+- Crear `PresetPanel` con tickets y valores seed editables
+
+## Phase 3 - User Story 1
+
+- Implementar modulo `TicketStatusCard`
+- Soportar header opcional `X-Requested-By`
+- Mostrar campos de contexto y respuesta cruda expandible
+
+## Phase 4 - User Story 2
+
+- Implementar `EntryAttemptCard`
+- Reutilizar formulario base para `ticketCode`, `readerId`, `gateId`, `sessionId`, `channel`
+- Mostrar claramente que `201` no implica aprobacion si `status` llega rechazado
+
+## Phase 5 - User Story 3
+
+- Implementar `ExitCard`
+- Implementar `ReEntryCard`
+- Reutilizar el formulario base con presets para `TICKET-ENTERED` y `TICKET-EXITED`
+
+## Phase 6 - User Story 4
+
+- Implementar `GateAssignmentCard`
+- Agregar ayudas visuales para categoria y zona
+- Mostrar `assignmentId` y conflictos de forma consistente
+
+## Phase 7 - Verification and Polish
+
+- Probar manualmente con backend local seed
+- Agregar tests de normalizacion de respuestas y render de estados clave
+- Ajustar responsive para desktop y tablet; mobile como soporte funcional secundario
+- Revisar copy operativo y contraste visual de estados
+
+---
+
+## 8. UI Notes
+
+- Pantalla inicial unica, sin landing.
+- Uso de tabs o secciones compactas; prioridad a escaneo rapido.
+- Formularios con valores editables y acciones claras.
+- Panel de respuesta visible sin tapar el formulario.
+- Colores de estado diferenciados: aprobado, rechazo funcional, error tecnico, loading.
+- Mostrar tambien el JSON crudo en bloque plegable para soporte y depuracion ligera.
+
+---
+
+## 9. Risks and Mitigations
+
+- **Riesgo**: los IDs de `readerId` y `sessionId` no son estables en todos los entornos.  
+  **Mitigacion**: presets editables y no hardcodear los IDs como constantes inmutables.
+
+- **Riesgo**: inconsistencia de shapes de error entre endpoints.  
+  **Mitigacion**: normalizador unico de respuestas antes de renderizar.
+
+- **Riesgo**: el backend puede depender de integracion externa para tickets no locales.  
+  **Mitigacion**: el MVP se concentra en tickets seed locales y muestra claramente rechazos o fallos tecnicos.
+
+- **Riesgo**: asumir que toda respuesta `2xx` es exito.  
+  **Mitigacion**: interpretar el payload funcional antes de pintar estado final.
+
+---
+
+## 10. Definition of Done
+
+- Existe `frontend/` en el repo y levanta localmente.
+- La app consume `localhost:8083` por configuracion de entorno.
+- Se pueden ejecutar desde UI: consulta de ticket, ingreso, salida, reingreso y asignacion de puerta.
+- La UI diferencia aprobacion, rechazo funcional y error tecnico.
+- Hay presets basados en seed real del backend.
+- Existe documentacion minima de arranque para correr backend y frontend juntos.
+
+---
+
+## 11. Success Criteria
+
+- La app frontend permite demo local sin Swagger.
+- Un operador puede probar el flujo basico usando `TICKET-ACTIVE-NORTH`, `TICKET-ENTERED` y `TICKET-EXITED`.
+- Los errores funcionales se entienden desde UI sin inspeccionar logs.
+- La implementacion inicial no requiere cambios de contrato en el backend.

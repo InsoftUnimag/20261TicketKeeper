@@ -5,10 +5,10 @@ import com.empresa.ingreso.application.port.in.ReEntryResult;
 import com.empresa.ingreso.application.port.in.ReEntryUseCase;
 import com.empresa.ingreso.application.port.out.LoadEntryRecordPort;
 import com.empresa.ingreso.application.port.out.LoadEventSessionPort;
-import com.empresa.ingreso.application.port.out.LoadTicketPort;
 import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
 import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
 import com.empresa.ingreso.application.port.out.SaveTicketPort;
+import com.empresa.ingreso.application.service.Modulo1TicketImportService;
 import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.AccessType;
 import com.empresa.ingreso.domain.model.AttemptResult;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class DefaultReEntryUseCase implements ReEntryUseCase {
     private static final int DEFAULT_REENTRY_LIMIT = 2;
-    private final LoadTicketPort loadTicketPort;
+    private final Modulo1TicketImportService modulo1TicketImportService;
     private final SaveTicketPort saveTicketPort;
     private final LoadEventSessionPort loadEventSessionPort;
     private final LoadEntryRecordPort loadEntryRecordPort;
@@ -33,19 +33,19 @@ public class DefaultReEntryUseCase implements ReEntryUseCase {
     private final Clock clock;
 
     @Autowired
-    public DefaultReEntryUseCase(LoadTicketPort loadTicketPort, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
-        this(loadTicketPort, saveTicketPort, loadEventSessionPort, loadEntryRecordPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
+    public DefaultReEntryUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
+        this(modulo1TicketImportService, saveTicketPort, loadEventSessionPort, loadEntryRecordPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
     }
 
-    DefaultReEntryUseCase(LoadTicketPort loadTicketPort, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
-        this.loadTicketPort=loadTicketPort; this.saveTicketPort=saveTicketPort; this.loadEventSessionPort=loadEventSessionPort; this.loadEntryRecordPort=loadEntryRecordPort; this.saveAccessAttemptPort=saveAccessAttemptPort; this.saveEntryRecordPort=saveEntryRecordPort; this.clock=clock;
+    DefaultReEntryUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
+        this.modulo1TicketImportService=modulo1TicketImportService; this.saveTicketPort=saveTicketPort; this.loadEventSessionPort=loadEventSessionPort; this.loadEntryRecordPort=loadEntryRecordPort; this.saveAccessAttemptPort=saveAccessAttemptPort; this.saveEntryRecordPort=saveEntryRecordPort; this.clock=clock;
     }
 
     @Override
     @Transactional
     public ReEntryResult execute(ReEntryCommand command) {
         OffsetDateTime now = OffsetDateTime.now(clock);
-        var maybeTicket = loadTicketPort.findByCodeForUpdate(command.ticketCode());
+        var maybeTicket = modulo1TicketImportService.resolveForSession(command.ticketCode(), command.sessionId());
         if (maybeTicket.isEmpty()) {
             persist(now, command, null, AttemptResult.REJECTED, ErrorCode.TICKET_NO_ENCONTRADO);
             return new ReEntryResult("REJECTED", "Ticket no encontrado", ErrorCode.TICKET_NO_ENCONTRADO, 0, DEFAULT_REENTRY_LIMIT);

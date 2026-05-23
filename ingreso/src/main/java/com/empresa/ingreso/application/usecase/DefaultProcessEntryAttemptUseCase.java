@@ -13,9 +13,9 @@ import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.EntryRecord;
 import com.empresa.ingreso.domain.model.EventSession;
 import com.empresa.ingreso.domain.model.ReaderDevice;
-import com.empresa.ingreso.domain.model.Ticket;
 import com.empresa.ingreso.domain.model.AccessType;
 import com.empresa.ingreso.domain.model.AttemptResult;
+import com.empresa.ingreso.domain.model.Ticket;
 import com.empresa.ingreso.domain.model.TicketStatus;
 import com.empresa.ingreso.shared.errors.ErrorCode;
 import com.empresa.ingreso.shared.errors.TechnicalException;
@@ -80,43 +80,42 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
 
     @Override
     @Transactional
-    public ProcessEntryAttemptResult execute(ProcessEntryAttemptCommand command) {
+    public Optional<ProcessEntryAttemptResult> execute(ProcessEntryAttemptCommand command) {
         OffsetDateTime now = OffsetDateTime.now(clock);
 
         try {
             Optional<ReaderDevice> maybeReader = validateReader(command);
             if (maybeReader.isEmpty()) {
                 AccessAttempt attempt = persistAttempt(now, command, null, AttemptResult.REJECTED, ErrorCode.LECTOR_NO_CONFIGURADO);
-                return rejected("Reader device is not configured", ErrorCode.LECTOR_NO_CONFIGURADO, attempt.id());
+                return Optional.of(rejected("Reader device is not configured", ErrorCode.LECTOR_NO_CONFIGURADO, attempt.id()));
             }
             ReaderDevice reader = maybeReader.get();
 
             Optional<Ticket> maybeTicket = loadTicketPort.findByCodeForUpdate(command.ticketCode());
             if (maybeTicket.isEmpty()) {
-                AccessAttempt attempt = persistAttempt(now, command, null, AttemptResult.REJECTED, ErrorCode.TICKET_NO_ENCONTRADO);
-                return rejected("Ticket was not found", ErrorCode.TICKET_NO_ENCONTRADO, attempt.id());
+                return Optional.empty();
             }
 
             Ticket ticket = maybeTicket.get();
 
             if (ticket.used() || ticket.status() == TicketStatus.ENTERED) {
                 AccessAttempt attempt = persistAttempt(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.TICKET_DUPLICADO);
-                return rejected("Ticket has already been used", ErrorCode.TICKET_DUPLICADO, attempt.id());
+                return Optional.of(rejected("Ticket has already been used", ErrorCode.TICKET_DUPLICADO, attempt.id()));
             }
 
             if (ticket.status() != TicketStatus.ACTIVE) {
                 AccessAttempt attempt = persistAttempt(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.ESTADO_INVALIDO);
-                return rejected("Ticket status does not allow entry", ErrorCode.ESTADO_INVALIDO, attempt.id());
+                return Optional.of(rejected("Ticket status does not allow entry", ErrorCode.ESTADO_INVALIDO, attempt.id()));
             }
 
             if (!validateSession(command, ticket)) {
                 AccessAttempt attempt = persistAttempt(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.SESION_INVALIDA);
-                return rejected("Event session is invalid", ErrorCode.SESION_INVALIDA, attempt.id());
+                return Optional.of(rejected("Event session is invalid", ErrorCode.SESION_INVALIDA, attempt.id()));
             }
 
             if (!validateZone(reader, ticket)) {
                 AccessAttempt attempt = persistAttempt(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.ZONA_INCORRECTA);
-                return rejected("Reader zone does not match ticket zone", ErrorCode.ZONA_INCORRECTA, attempt.id());
+                return Optional.of(rejected("Reader zone does not match ticket zone", ErrorCode.ZONA_INCORRECTA, attempt.id()));
             }
 
             saveEntryRecordPort.save(new EntryRecord(
@@ -135,12 +134,16 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
                     ticket.category(),
                     ticket.allowedZone(),
                     ticket.sessionId(),
-                    true
+                    true,
+                    ticket.externalTicketId(),
+                    ticket.externalEventId(),
+                    ticket.seatNumber(),
+                    ticket.reEntryAllowed()
             );
             saveTicketPort.save(enteredTicket);
 
             AccessAttempt approvedAttempt = persistAttempt(now, command, ticket.id(), AttemptResult.APPROVED, null);
-            return approved("Entry authorized", approvedAttempt.id());
+            return Optional.of(approved("Entry authorized", approvedAttempt.id()));
         } catch (TechnicalException e) {
             throw e;
         } catch (Exception e) {

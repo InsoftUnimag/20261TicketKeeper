@@ -1,6 +1,8 @@
 package com.empresa.ingreso.application.port.in;
 
+import java.util.Optional;
+
 public interface ProcessEntryAttemptUseCase {
 
-    ProcessEntryAttemptResult execute(ProcessEntryAttemptCommand command);
+    Optional<ProcessEntryAttemptResult> execute(ProcessEntryAttemptCommand command);
 }

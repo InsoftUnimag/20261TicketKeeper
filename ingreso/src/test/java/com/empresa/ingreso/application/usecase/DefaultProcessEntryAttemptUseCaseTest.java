@@ -36,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DefaultProcessEntryAttemptUseCaseTest {
 
     @Mock LoadReaderDevicePort readerRepo;
-    @Mock LoadTicketPort ticketRepo;
+    @Mock LoadTicketPort loadTicketPort;
     @Mock SaveTicketPort saveTicketPort;
     @Mock LoadEventSessionPort sessionRepo;
     @Mock SaveAccessAttemptPort attemptRepo;
@@ -48,7 +48,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
     @BeforeEach
     void setUp() {
         attemptIds = new AtomicLong(100);
-        when(attemptRepo.save(any())).thenAnswer(inv -> {
+        lenient().when(attemptRepo.save(any())).thenAnswer(inv -> {
             AccessAttempt attempt = inv.getArgument(0);
             return new AccessAttempt(
                     attempt.id() == null ? attemptIds.incrementAndGet() : attempt.id(),
@@ -68,7 +68,7 @@ class DefaultProcessEntryAttemptUseCaseTest {
         Clock fixed = Clock.fixed(Instant.parse("2026-04-17T12:00:00Z"), ZoneOffset.UTC);
         useCase = new DefaultProcessEntryAttemptUseCase(
                 readerRepo,
-                ticketRepo,
+                loadTicketPort,
                 saveTicketPort,
                 sessionRepo,
                 attemptRepo,
@@ -84,85 +84,90 @@ class DefaultProcessEntryAttemptUseCaseTest {
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.LECTOR_NO_CONFIGURADO);
-        assertThat(res.attemptId()).isNotNull();
-        verify(ticketRepo, never()).findByCodeForUpdate(any());
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("REJECTED");
+        assertThat(res.get().errorCode()).isEqualTo(ErrorCode.LECTOR_NO_CONFIGURADO);
+        assertThat(res.get().attemptId()).isNotNull();
+        verify(loadTicketPort, never()).findByCodeForUpdate(any());
     }
 
     @Test
     void rejects_when_ticket_not_found() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("NOPE", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("NOPE")).thenReturn(Optional.empty());
+        when(loadTicketPort.findByCodeForUpdate("NOPE")).thenReturn(Optional.empty());
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.TICKET_NO_ENCONTRADO);
+        assertThat(res).isEmpty();
     }
 
     @Test
     void rejects_when_ticket_status_invalid() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.CANCELED, 30L, "A", false)));
+        when(loadTicketPort.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.CANCELED, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.ESTADO_INVALIDO);
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("REJECTED");
+        assertThat(res.get().errorCode()).isEqualTo(ErrorCode.ESTADO_INVALIDO);
     }
 
     @Test
     void rejects_when_session_invalid() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 999L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(loadTicketPort.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.SESION_INVALIDA);
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("REJECTED");
+        assertThat(res.get().errorCode()).isEqualTo(ErrorCode.SESION_INVALIDA);
     }
 
     @Test
     void rejects_when_zone_incorrect() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "B")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(loadTicketPort.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
         when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.ZONA_INCORRECTA);
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("REJECTED");
+        assertThat(res.get().errorCode()).isEqualTo(ErrorCode.ZONA_INCORRECTA);
     }
 
     @Test
     void rejects_when_ticket_duplicate() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.QR);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ENTERED, 30L, "A", true)));
+        when(loadTicketPort.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ENTERED, 30L, "A", true)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("REJECTED");
-        assertThat(res.errorCode()).isEqualTo(ErrorCode.TICKET_DUPLICADO);
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("REJECTED");
+        assertThat(res.get().errorCode()).isEqualTo(ErrorCode.TICKET_DUPLICADO);
     }
 
     @Test
     void approves_when_all_validations_pass() {
         ProcessEntryAttemptCommand req = new ProcessEntryAttemptCommand("T1", 10L, 20L, 30L, AccessChannel.MANUAL);
         when(readerRepo.findReaderDeviceById(10L)).thenReturn(Optional.of(validReader(10L, 20L, "A")));
-        when(ticketRepo.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
+        when(loadTicketPort.findByCodeForUpdate("T1")).thenReturn(Optional.of(ticket(1L, "T1", TicketStatus.ACTIVE, 30L, "A", false)));
         when(sessionRepo.findEventSessionById(30L)).thenReturn(Optional.of(activeSession(30L)));
 
         var res = useCase.execute(req);
 
-        assertThat(res.status()).isEqualTo("APPROVED");
-        assertThat(res.errorCode()).isNull();
-        assertThat(res.attemptId()).isNotNull();
+        assertThat(res).isPresent();
+        assertThat(res.get().status()).isEqualTo("APPROVED");
+        assertThat(res.get().errorCode()).isNull();
+        assertThat(res.get().attemptId()).isNotNull();
     }
 
     private static ReaderDevice validReader(Long readerId, Long gateId, String zone) {
