@@ -6,20 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Conexion modulo 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/TicketPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/TicketPersistenceAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-h2.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application-postgres.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/frontend-doc/plan-frontend-operacion-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/frontend-doc/plan-frontend-operacion-ingreso.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/frontend-doc/spec-frontend-operacion-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/frontend-doc/spec-frontend-operacion-ingreso.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/Modulo1ClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/Modulo1ClientConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/test/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +173,8 @@
       <workItem from="1779479427476" duration="5789000" />
       <workItem from="1779490385248" duration="4795000" />
       <workItem from="1779544154758" duration="4544000" />
-      <workItem from="1779562483671" duration="881000" />
+      <workItem from="1779562483671" duration="1800000" />
+      <workItem from="1779564537301" duration="471000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -329,7 +320,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779562654085</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Conexion modulo 1">
+      <option name="closed" value="true" />
+      <created>1779563701564</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1779563701564</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,9 +1,10 @@
 package com.empresa.ingreso.infrastructure.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class Modulo1ClientConfig {
@@ -12,9 +13,9 @@ public class Modulo1ClientConfig {
     private String modulo1Url;
 
     @Bean
-    public WebClient modulo1WebClient() {
-        return WebClient.builder()
-                .baseUrl(modulo1Url)
+    public RestTemplate modulo1RestTemplate(RestTemplateBuilder builder) {
+        return builder
+                .rootUri(modulo1Url)
                 .build();
     }
 }
