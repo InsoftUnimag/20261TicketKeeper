@@ -4,4 +4,4 @@ import com.empresa.ingreso.domain.model.EntryRecord;
 import java.util.List;
 import java.util.Optional;
 
-public interface LoadEntryRecordPort { Optional<EntryRecord> findLatestByTicketId(Long ticketId); List<EntryRecord> findByEventId(Long eventId); long countReEntriesByTicketId(Long ticketId); }
+public interface LoadEntryRecordPort { Optional<EntryRecord> findLatestByTicketId(Long ticketId); List<EntryRecord> findByEventId(String eventId); long countReEntriesByTicketId(Long ticketId); }

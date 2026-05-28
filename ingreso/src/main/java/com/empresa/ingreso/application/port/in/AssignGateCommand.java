@@ -1,3 +1,3 @@
 package com.empresa.ingreso.application.port.in;
 
-public record AssignGateCommand(Long sessionId, Long gateId, String ticketCategory, String zone) {}
+public record AssignGateCommand(String sessionId, Long gateId, String ticketCategory, String zone) {}

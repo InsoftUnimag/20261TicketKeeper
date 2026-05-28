@@ -9,7 +9,7 @@ public record AccessAttempt(
         String enteredTicketCode,
         Long readerId,
         Long gateId,
-        Long sessionId,
+        String sessionId,
         AccessChannel channel,
         AttemptResult result,
         ErrorCode errorCode,
@@ -18,7 +18,7 @@ public record AccessAttempt(
     public AccessAttempt {
         validatePositive(readerId, "readerId");
         validatePositive(gateId, "gateId");
-        validatePositive(sessionId, "sessionId");
+        requireText(sessionId, "sessionId");
         requireText(enteredTicketCode, "enteredTicketCode");
         requireNonNull(channel, "channel");
         requireNonNull(result, "result");

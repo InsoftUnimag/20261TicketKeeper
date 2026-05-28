@@ -46,7 +46,7 @@ public class EntryRecordQueryController {
                                     {
                                       "ticketCode": "TK-1001",
                                       "finalStatus": "ENTERED",
-                                      "sessionId": 42,
+                                      "sessionId": "00016ec5-90fb-4c63-aba9-3ea17abd27c0",
                                       "gateId": 7,
                                       "accessType": "ENTRY",
                                       "entryAt": "2026-05-09T10:00:00Z"
@@ -58,7 +58,7 @@ public class EntryRecordQueryController {
     })
     public ResponseEntity<EntryRecordResponse> byTicket(@Parameter(description = "Codigo unico del ticket") @PathVariable String ticketCode) {
         var r = getEntryRecordByTicketUseCase.execute(ticketCode);
-        return ResponseEntity.ok(new EntryRecordResponse(r.ticketCode(), r.finalStatus(), r.sessionId(), r.gateId(), r.accessType(), r.entryAt()));
+        return ResponseEntity.ok(new EntryRecordResponse(r.ticketCode(), r.finalStatus(), r.eventId(), r.gateId(), r.accessType(), r.entryAt()));
     }
 
     @GetMapping("/events/{eventId}")
@@ -78,7 +78,7 @@ public class EntryRecordQueryController {
                                       {
                                         "ticketCode": "TK-1001",
                                         "finalStatus": "ENTERED",
-                                        "sessionId": 42,
+                                        "sessionId": "00016ec5-90fb-4c63-aba9-3ea17abd27c0",
                                         "gateId": 7,
                                         "accessType": "ENTRY",
                                         "entryAt": "2026-05-09T10:00:00Z"
@@ -89,9 +89,9 @@ public class EntryRecordQueryController {
             ),
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
-    public ResponseEntity<List<EntryRecordResponse>> byEvent(@Parameter(description = "Identificador numerico del evento") @PathVariable Long eventId) {
+    public ResponseEntity<List<EntryRecordResponse>> byEvent(@Parameter(description = "Identificador del evento (UUID)") @PathVariable String eventId) {
         var result = getEntryRecordsByEventUseCase.execute(eventId).stream()
-                .map(r -> new EntryRecordResponse(r.ticketCode(), r.finalStatus(), r.sessionId(), r.gateId(), r.accessType(), r.entryAt()))
+                .map(r -> new EntryRecordResponse(r.ticketCode(), r.finalStatus(), r.eventId(), r.gateId(), r.accessType(), r.entryAt()))
                 .toList();
         return ResponseEntity.ok(result);
     }

@@ -20,7 +20,7 @@ public class GateAssignmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Long sessionId;
+    private String sessionId;
     @Column(nullable = false)
     private Long gateId;
     @Column(nullable = false)

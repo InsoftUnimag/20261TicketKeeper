@@ -20,14 +20,14 @@ public class GateAssignmentPersistenceAdapter implements
     }
 
     @Override
-    public Optional<GateAssignment> findActiveBySessionGateAndCategory(Long sessionId, Long gateId, String ticketCategory) {
+    public Optional<GateAssignment> findActiveBySessionGateAndCategory(String sessionId, Long gateId, String ticketCategory) {
         return gateAssignmentRepository
                 .findFirstBySessionIdAndGateIdAndTicketCategoryAndActiveTrue(sessionId, gateId, ticketCategory)
                 .map(this::toDomain);
     }
 
     @Override
-    public boolean existsActiveConflict(Long sessionId, Long gateId, String ticketCategory) {
+    public boolean existsActiveConflict(String sessionId, Long gateId, String ticketCategory) {
         return gateAssignmentRepository.existsBySessionIdAndGateIdAndTicketCategoryAndActiveTrue(
                 sessionId,
                 gateId,

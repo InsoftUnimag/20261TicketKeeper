@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public record EntryRecord(
         Long id,
         Long ticketId,
-        Long eventId,
+        String eventId,
         Long gateId,
         AccessType accessType,
         OffsetDateTime enteredAt
@@ -15,7 +15,7 @@ public record EntryRecord(
             throw new IllegalArgumentException("id must be greater than zero");
         }
         validatePositive(ticketId, "ticketId");
-        validatePositive(eventId, "eventId");
+        requireText(eventId, "eventId");
         validatePositive(gateId, "gateId");
         requireNonNull(accessType, "accessType");
         requireNonNull(enteredAt, "enteredAt");
@@ -25,6 +25,12 @@ public record EntryRecord(
         requireNonNull(value, fieldName);
         if (value <= 0) {
             throw new IllegalArgumentException(fieldName + " must be greater than zero");
+        }
+    }
+
+    private static void requireText(String value, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(fieldName + " is required");
         }
     }
 

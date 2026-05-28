@@ -29,7 +29,7 @@ public class Modulo1TicketImportService {
     }
 
     @Transactional
-    public Optional<Ticket> resolveForSession(String scannedTicketId, Long sessionId) {
+    public Optional<Ticket> resolveForSession(String scannedTicketId, String sessionId) {
         Optional<Ticket> localTicket = loadTicketPort.findByCodeForUpdate(scannedTicketId);
         if (localTicket.isPresent()) {
             return localTicket;
@@ -39,7 +39,12 @@ public class Modulo1TicketImportService {
                 .map(snapshot -> saveTicketPort.save(toLocalTicket(snapshot, scannedTicketId, sessionId)));
     }
 
-    private Ticket toLocalTicket(Modulo1TicketSnapshot snapshot, String scannedTicketId, Long sessionId) {
+    public Optional<Ticket> findTransientByCode(String scannedTicketId) {
+        return loadModulo1TicketPort.findById(scannedTicketId)
+                .map(snapshot -> toTransientTicket(snapshot, scannedTicketId));
+    }
+
+    private Ticket toLocalTicket(Modulo1TicketSnapshot snapshot, String scannedTicketId, String sessionId) {
         return new Ticket(
                 null,
                 scannedTicketId,
@@ -47,6 +52,22 @@ public class Modulo1TicketImportService {
                 defaultText(snapshot.category(), "GENERAL"),
                 defaultText(snapshot.zone(), "GENERAL"),
                 sessionId,
+                false,
+                snapshot.ticketId(),
+                snapshot.eventId(),
+                snapshot.seatNumber(),
+                snapshot.reEntryAllowed()
+        );
+    }
+
+    private Ticket toTransientTicket(Modulo1TicketSnapshot snapshot, String scannedTicketId) {
+        return new Ticket(
+                null,
+                scannedTicketId,
+                mapStatus(snapshot.status()),
+                defaultText(snapshot.category(), "GENERAL"),
+                defaultText(snapshot.zone(), "GENERAL"),
+                null,
                 false,
                 snapshot.ticketId(),
                 snapshot.eventId(),

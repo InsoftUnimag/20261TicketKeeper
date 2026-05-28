@@ -4,7 +4,7 @@ import com.empresa.ingreso.application.port.in.ReEntryCommand;
 import com.empresa.ingreso.application.port.in.ReEntryResult;
 import com.empresa.ingreso.application.port.in.ReEntryUseCase;
 import com.empresa.ingreso.application.port.out.LoadEntryRecordPort;
-import com.empresa.ingreso.application.port.out.LoadEventSessionPort;
+import com.empresa.ingreso.application.port.out.Modulo1Port;
 import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
 import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
 import com.empresa.ingreso.application.port.out.SaveTicketPort;
@@ -17,7 +17,6 @@ import com.empresa.ingreso.domain.model.Ticket;
 import com.empresa.ingreso.shared.errors.ErrorCode;
 import java.time.Clock;
 import java.time.OffsetDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,19 +25,20 @@ public class DefaultReEntryUseCase implements ReEntryUseCase {
     private static final int DEFAULT_REENTRY_LIMIT = 2;
     private final Modulo1TicketImportService modulo1TicketImportService;
     private final SaveTicketPort saveTicketPort;
-    private final LoadEventSessionPort loadEventSessionPort;
+    private final Modulo1Port modulo1Port;
     private final LoadEntryRecordPort loadEntryRecordPort;
     private final SaveAccessAttemptPort saveAccessAttemptPort;
     private final SaveEntryRecordPort saveEntryRecordPort;
     private final Clock clock;
 
-    @Autowired
-    public DefaultReEntryUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
-        this(modulo1TicketImportService, saveTicketPort, loadEventSessionPort, loadEntryRecordPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
-    }
-
-    DefaultReEntryUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, LoadEventSessionPort loadEventSessionPort, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
-        this.modulo1TicketImportService=modulo1TicketImportService; this.saveTicketPort=saveTicketPort; this.loadEventSessionPort=loadEventSessionPort; this.loadEntryRecordPort=loadEntryRecordPort; this.saveAccessAttemptPort=saveAccessAttemptPort; this.saveEntryRecordPort=saveEntryRecordPort; this.clock=clock;
+    public DefaultReEntryUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, Modulo1Port modulo1Port, LoadEntryRecordPort loadEntryRecordPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
+        this.modulo1TicketImportService=modulo1TicketImportService;
+        this.saveTicketPort=saveTicketPort;
+        this.modulo1Port=modulo1Port;
+        this.loadEntryRecordPort=loadEntryRecordPort;
+        this.saveAccessAttemptPort=saveAccessAttemptPort;
+        this.saveEntryRecordPort=saveEntryRecordPort;
+        this.clock=Clock.systemUTC();
     }
 
     @Override
@@ -54,7 +54,10 @@ public class DefaultReEntryUseCase implements ReEntryUseCase {
         int used = Math.toIntExact(loadEntryRecordPort.countReEntriesByTicketId(ticket.id()));
         if (ticket.isInvalidForAccess()) return reject(now, command, ticket.id(), ErrorCode.ESTADO_INVALIDO, "Ticket con estado invalido", used);
         if (!ticket.canRegisterReEntry()) return reject(now, command, ticket.id(), ErrorCode.REINGRESO_NO_PERMITIDO, "Reingreso no permitido", used);
-        if (loadEventSessionPort.findEventSessionById(command.sessionId()).isEmpty()) return reject(now, command, ticket.id(), ErrorCode.EVENTO_NO_ENCONTRADO, "Evento no encontrado", used);
+        
+        // Validar que el evento existe y está activo en el Módulo 1
+        modulo1Port.findActiveEventById(command.sessionId()).orElseThrow(() -> new com.empresa.ingreso.shared.errors.BusinessException(ErrorCode.EVENTO_NO_ENCONTRADO, "Evento no encontrado o inactivo en Módulo 1"));
+
         if (used >= DEFAULT_REENTRY_LIMIT) return reject(now, command, ticket.id(), ErrorCode.LIMITE_REINGRESO_EXCEDIDO, "Limite de reingresos excedido", used);
         saveEntryRecordPort.save(new EntryRecord(null, ticket.id(), command.sessionId(), command.gateId(), AccessType.RE_ENTRY, now));
         saveTicketPort.save(ticket.markEntered());

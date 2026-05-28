@@ -10,6 +10,6 @@ public record RegisterExitRequest(
         @Schema(description = "Codigo unico del ticket", example = "TK-1001") @NotBlank String ticketCode,
         @Schema(description = "Identificador del lector", example = "15") @NotNull Long readerId,
         @Schema(description = "Identificador de la puerta", example = "7") @NotNull Long gateId,
-        @Schema(description = "Identificador de la sesion", example = "42") @NotNull Long sessionId,
+        @Schema(description = "Identificador de la sesion (UUID)", example = "00016ec5-90fb-4c63-aba9-3ea17abd27c0") @NotBlank String sessionId,
         @Schema(description = "Canal de captura del acceso", allowableValues = {"QR", "MANUAL"}, example = "QR") @NotNull AccessChannel channel
 ) {}

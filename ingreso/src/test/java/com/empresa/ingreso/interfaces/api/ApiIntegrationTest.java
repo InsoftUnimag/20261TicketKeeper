@@ -2,10 +2,13 @@ package com.empresa.ingreso.interfaces.api;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.empresa.ingreso.domain.model.TicketStatus;
+import com.empresa.ingreso.domain.model.Modulo1TicketSnapshot;
+import com.empresa.ingreso.infrastructure.integration.adapter.Modulo1TicketRestAdapter;
 import com.empresa.ingreso.infrastructure.persistence.entity.EntryRecordEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.EventSessionEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.GateAssignmentEntity;
@@ -16,14 +19,20 @@ import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataEvent
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataGateAssignmentRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataReaderDeviceRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataTicketRepository;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,6 +57,15 @@ class ApiIntegrationTest {
     @Autowired
     private SpringDataGateAssignmentRepository gateAssignmentRepository;
 
+    @MockBean
+    private Modulo1TicketRestAdapter modulo1TicketRestAdapter;
+
+    @BeforeEach
+    void mockModulo1ByDefault() {
+        when(modulo1TicketRestAdapter.findById(org.mockito.ArgumentMatchers.anyString()))
+                .thenReturn(Optional.empty());
+    }
+
     @Test
     void get_ticket_status_returns_not_found_for_unknown_ticket() throws Exception {
         mockMvc.perform(get("/api/v1/tickets/UNKNOWN/status"))
@@ -57,22 +75,43 @@ class ApiIntegrationTest {
     }
 
     @Test
+    void get_ticket_status_uses_modulo1_when_ticket_is_missing_locally() throws Exception {
+        when(modulo1TicketRestAdapter.findById("M1-STATUS"))
+                .thenReturn(Optional.of(new Modulo1TicketSnapshot(
+                        "M1-STATUS",
+                        "EV-1",
+                        "ACTIVE",
+                        "GENERAL",
+                        "NORTE",
+                        "101",
+                        LocalDateTime.of(2026, 5, 10, 18, 0),
+                        "A-10",
+                        true
+                )));
+
+        mockMvc.perform(get("/api/v1/tickets/M1-STATUS/status"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("VALID"))
+                .andExpect(jsonPath("$.ticketStatus").value("ACTIVE"))
+                .andExpect(jsonPath("$.ticketCode").value("M1-STATUS"))
+                .andExpect(jsonPath("$.sessionId").doesNotExist());
+    }
+
+    @Test
     void process_entry_attempt_approves_valid_ticket() throws Exception {
         EventSessionEntity session = seedActiveSession();
         ReaderDeviceEntity reader = seedReader(20L, "A");
         seedTicket("T1", TicketStatus.ACTIVE, "A", session.getId(), false);
 
+        configureReaderOperation(reader.getId(), session.getId(), "QR");
+
         mockMvc.perform(post("/api/v1/entry-attempts")
                         .contentType(MediaType.APPLICATION_JSON)
-                .content("""
+                        .content("""
                                 {
-                                  "ticketCode": "%s",
-                                  "readerId": %d,
-                                  "gateId": %d,
-                                  "sessionId": %d,
-                                  "channel": "QR"
+                                  "ticketCode": "T1"
                                 }
-                                """.formatted("T1", reader.getId(), reader.getGateId(), session.getId())))
+                                """))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value("APPROVED"))
                 .andExpect(jsonPath("$.errorCode").isEmpty())
@@ -85,17 +124,15 @@ class ApiIntegrationTest {
         ReaderDeviceEntity reader = seedReader(20L, "A");
         seedTicket("T2", TicketStatus.ACTIVE, "A", session.getId(), false);
 
+        configureReaderOperation(reader.getId(), session.getId(), "MANUAL");
+
         mockMvc.perform(post("/api/v1/entry-attempts")
                         .contentType(MediaType.APPLICATION_JSON)
-                .content("""
+                        .content("""
                                 {
-                                  "ticketCode": "%s",
-                                  "readerId": %d,
-                                  "gateId": %d,
-                                  "sessionId": %d,
-                                  "channel": "MANUAL"
+                                  "ticketCode": "T2"
                                 }
-                                """.formatted("T2", reader.getId(), reader.getGateId(), session.getId())))
+                                """))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value("APPROVED"));
 
@@ -106,6 +143,29 @@ class ApiIntegrationTest {
                 .andExpect(jsonPath("$.sessionId").value(session.getId()))
                 .andExpect(jsonPath("$.gateId").value(20))
                 .andExpect(jsonPath("$.accessType").value("ENTRY"));
+    }
+
+    @Test
+    void reader_configuration_updates_active_reader_and_exposes_available_readers() throws Exception {
+        EventSessionEntity session = seedActiveSession();
+        ReaderDeviceEntity northReader = seedReader(101L, "NORTE");
+        seedReader(102L, "SUR");
+
+        mockMvc.perform(put("/api/v1/reader-configuration")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "readerId": %d,
+                                  "sessionId": %d,
+                                  "channel": "QR"
+                                }
+                                """.formatted(northReader.getId(), session.getId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.readerId").value(northReader.getId()))
+                .andExpect(jsonPath("$.gateId").value(101))
+                .andExpect(jsonPath("$.assignedZone").value("NORTE"))
+                .andExpect(jsonPath("$.sessionId").value(session.getId()))
+                .andExpect(jsonPath("$.availableReaders").isArray());
     }
 
     @Test
@@ -232,5 +292,18 @@ class ApiIntegrationTest {
         assignment.setZone(zone);
         assignment.setActive(active);
         return gateAssignmentRepository.save(assignment);
+    }
+
+    private void configureReaderOperation(Long readerId, Long sessionId, String channel) throws Exception {
+        mockMvc.perform(put("/api/v1/reader-configuration")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "readerId": %d,
+                                  "sessionId": %d,
+                                  "channel": "%s"
+                                }
+                                """.formatted(readerId, sessionId, channel)))
+                .andExpect(status().isOk());
     }
 }

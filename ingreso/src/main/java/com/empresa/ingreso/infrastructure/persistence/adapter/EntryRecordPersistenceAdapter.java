@@ -25,7 +25,7 @@ public class EntryRecordPersistenceAdapter implements LoadEntryRecordPort, SaveE
     }
 
     @Override
-    public List<EntryRecord> findByEventId(Long eventId) {
+    public List<EntryRecord> findByEventId(String eventId) {
         return entryRecordRepository.findByEventIdOrderByEnteredAtAsc(eventId).stream().map(this::toDomain).toList();
     }
 

@@ -29,7 +29,7 @@ public class EntryRecordEntity {
     private Long ticketId;
 
     @Column(nullable = false)
-    private Long eventId;
+    private String eventId;
 
     @Column(nullable = false)
     private Long gateId;

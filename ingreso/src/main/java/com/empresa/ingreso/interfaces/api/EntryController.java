@@ -4,7 +4,10 @@ import com.empresa.ingreso.application.port.in.ProcessEntryAttemptCommand;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptResult;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptUseCase;
 import com.empresa.ingreso.application.service.Modulo1TicketImportService;
+import com.empresa.ingreso.application.service.ReaderOperationSettings;
+import com.empresa.ingreso.application.service.ReaderOperationSettingsService;
 import com.empresa.ingreso.infrastructure.integration.adapter.Modulo1TicketRestAdapter;
+import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataReaderDeviceRepository;
 import com.empresa.ingreso.interfaces.api.dto.ProcessEntryAttemptRequest;
 import com.empresa.ingreso.interfaces.api.dto.ProcessEntryAttemptResponse;
 import com.empresa.ingreso.shared.errors.ErrorCode;
@@ -32,21 +35,39 @@ public class EntryController {
     private final ProcessEntryAttemptUseCase processEntryAttemptUseCase;
     private final Modulo1TicketRestAdapter modulo1TicketRestAdapter;
     private final Modulo1TicketImportService modulo1TicketImportService;
+    private final ReaderOperationSettingsService readerOperationSettingsService;
+    private final SpringDataReaderDeviceRepository readerDeviceRepository;
 
     public EntryController(
             ProcessEntryAttemptUseCase processEntryAttemptUseCase,
             Modulo1TicketRestAdapter modulo1TicketRestAdapter,
-            Modulo1TicketImportService modulo1TicketImportService
+            Modulo1TicketImportService modulo1TicketImportService,
+            ReaderOperationSettingsService readerOperationSettingsService,
+            SpringDataReaderDeviceRepository readerDeviceRepository
     ) {
         this.processEntryAttemptUseCase = processEntryAttemptUseCase;
         this.modulo1TicketRestAdapter = modulo1TicketRestAdapter;
         this.modulo1TicketImportService = modulo1TicketImportService;
+        this.readerOperationSettingsService = readerOperationSettingsService;
+        this.readerDeviceRepository = readerDeviceRepository;
     }
 
     @PostMapping
     @Operation(
             summary = "Procesar intento de ingreso",
-            description = "Valida si un ticket puede ingresar a una sesion por una puerta determinada y registra el intento."
+            description = "Valida si un ticket puede ingresar usando la configuracion operativa actual del lector y registra el intento.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProcessEntryAttemptRequest.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "ticketCode": "TICKET-ACTIVE-NORTH"
+                                    }
+                                    """)
+                    )
+            )
     )
     @ApiResponses({
             @ApiResponse(
@@ -57,8 +78,8 @@ public class EntryController {
                             schema = @Schema(implementation = ProcessEntryAttemptResponse.class),
                             examples = @ExampleObject(value = """
                                     {
-                                      "status": "OK",
                                       "message": "Ingreso permitido",
+                                      "status": "OK",
                                       "errorCode": null,
                                       "attemptId": 125
                                     }
@@ -81,13 +102,7 @@ public class EntryController {
             )
     })
     public ResponseEntity<ProcessEntryAttemptResponse> process(@Valid @RequestBody ProcessEntryAttemptRequest request) {
-        ProcessEntryAttemptCommand command = new ProcessEntryAttemptCommand(
-                request.ticketCode(),
-                request.readerId(),
-                request.gateId(),
-                request.sessionId(),
-                request.channel()
-        );
+        ProcessEntryAttemptCommand command = buildCommand(request.ticketCode());
         Optional<ProcessEntryAttemptResult> result = processEntryAttemptUseCase.execute(command);
         if (result.isEmpty()) {
             result = resolveFromModulo1(command);
@@ -119,5 +134,20 @@ public class EntryController {
 
         modulo1TicketImportService.resolveForSession(command.ticketCode(), command.sessionId());
         return processEntryAttemptUseCase.execute(command);
+    }
+
+    private ProcessEntryAttemptCommand buildCommand(String ticketCode) {
+        ReaderOperationSettings settings = readerOperationSettingsService.getCurrentSettings();
+        var reader = readerDeviceRepository.findById(settings.readerId())
+                .orElseThrow(() -> new IllegalArgumentException("Configured reader does not exist"));
+
+        return new ProcessEntryAttemptCommand(
+                ticketCode,
+                reader.getId(),
+                reader.getGateId(),
+                settings.sessionId(),
+                settings.assignedZone(), // <-- Campo añadido
+                settings.channel()
+        );
     }
 }

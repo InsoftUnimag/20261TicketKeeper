@@ -6,7 +6,8 @@ public record ProcessEntryAttemptCommand(
         String ticketCode,
         Long readerId,
         Long gateId,
-        Long sessionId,
+        String sessionId,
+        String assignedZone, // <-- Campo añadido
         AccessChannel channel
 ) {
 }

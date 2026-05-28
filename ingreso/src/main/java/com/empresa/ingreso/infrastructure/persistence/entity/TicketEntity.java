@@ -38,7 +38,7 @@ public class TicketEntity {
     private String allowedZone;
 
     @Column(nullable = false)
-    private Long sessionId;
+    private String sessionId;
 
     @Column(nullable = false)
     private boolean used;

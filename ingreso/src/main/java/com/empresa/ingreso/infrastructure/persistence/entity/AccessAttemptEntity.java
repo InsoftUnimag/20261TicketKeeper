@@ -39,7 +39,7 @@ public class AccessAttemptEntity {
     private Long gateId;
 
     @Column(nullable = false)
-    private Long sessionId;
+    private String sessionId; // Changed from Long to String
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

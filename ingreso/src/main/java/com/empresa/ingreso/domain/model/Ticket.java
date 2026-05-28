@@ -6,7 +6,7 @@ public record Ticket(
         TicketStatus status,
         String category,
         String allowedZone,
-        Long sessionId,
+        String sessionId,
         boolean used,
         String externalTicketId,
         String externalEventId,
@@ -19,7 +19,7 @@ public record Ticket(
             TicketStatus status,
             String category,
             String allowedZone,
-            Long sessionId,
+            String sessionId,
             boolean used
     ) {
         this(id, code, status, category, allowedZone, sessionId, used, null, null, null, false);

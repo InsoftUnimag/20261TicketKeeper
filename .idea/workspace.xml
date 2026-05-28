@@ -5,11 +5,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="330476e6-2f73-4d33-b16f-01d7ef3465a1" name="Changes" comment="Conexion modulo 1">
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/out/Modulo1Port.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/service/RecintoInfoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/RestTemplateConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/integration/adapter/Modulo1Adapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/dto/AttendingTicketInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/AttendanceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/ConfigurationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AttendanceDetailResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AttendanceSummaryResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GateResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/Modulo1EventoDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/Modulo1RecintoEstructuraDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/SessionResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/frontend-doc/plan-frontend-operacion-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/frontend-doc/plan-frontend-operacion-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/frontend-doc/spec-frontend-operacion-ingreso.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/frontend-doc/spec-frontend-operacion-ingreso.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/Modulo1ClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/Modulo1ClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/AssignGateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/AssignGateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetEntryRecordByTicketResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetEntryRecordByTicketResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetEntryRecordsByEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetEntryRecordsByEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetTicketStatusResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/GetTicketStatusResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ProcessEntryAttemptCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ReEntryCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/ReEntryCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/RegisterExitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/in/RegisterExitCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/out/LoadEntryRecordPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/out/LoadEntryRecordPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/out/LoadGateAssignmentPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/port/out/LoadGateAssignmentPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/service/Modulo1TicketImportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/service/Modulo1TicketImportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultAssignGateUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultAssignGateUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultGetEntryRecordsByEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultGetEntryRecordsByEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultGetTicketStatusUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultGetTicketStatusUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultProcessEntryAttemptUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultReEntryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/application/usecase/DefaultRegisterExitUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessAttempt.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/AccessAttempt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/EntryRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/GateAssignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/GateAssignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/domain/model/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/EntryRecordPersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/adapter/GateAssignmentPersistenceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/AccessAttemptEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/AccessAttemptEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/EntryRecordEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/EntryRecordEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/GateAssignmentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/GateAssignmentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/entity/TicketEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataEntryRecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataEntryRecordRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataGateAssignmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/repository/SpringDataGateAssignmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/seed/DatabaseSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/infrastructure/persistence/seed/DatabaseSeeder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/EntryRecordQueryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/TicketStatusController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/AssignGateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/EntryRecordResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/GetTicketStatusResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ProcessEntryAttemptRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/ReEntryRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/java/com/empresa/ingreso/interfaces/api/dto/RegisterExitRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/interfaces/api/ApiIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ingreso/src/test/java/com/empresa/ingreso/interfaces/api/ApiIntegrationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +67,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="114" />
+    <option name="cachedIndexableFilesCount" value="130" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -71,6 +121,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;New/updated database configurations found&quot;,
+    &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
@@ -94,7 +146,8 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JAVA&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -174,7 +227,26 @@
       <workItem from="1779490385248" duration="4795000" />
       <workItem from="1779544154758" duration="4544000" />
       <workItem from="1779562483671" duration="1800000" />
-      <workItem from="1779564537301" duration="471000" />
+      <workItem from="1779564537301" duration="1976000" />
+      <workItem from="1779579992275" duration="1325000" />
+      <workItem from="1779652233640" duration="2851000" />
+      <workItem from="1779656544713" duration="1906000" />
+      <workItem from="1779693498914" duration="157000" />
+      <workItem from="1779731531990" duration="2115000" />
+      <workItem from="1779733835846" duration="653000" />
+      <workItem from="1779737482041" duration="634000" />
+      <workItem from="1779738723160" duration="2903000" />
+      <workItem from="1779743122965" duration="6104000" />
+      <workItem from="1779837496546" duration="4163000" />
+      <workItem from="1779854829048" duration="1823000" />
+      <workItem from="1779857188827" duration="370000" />
+      <workItem from="1779857596186" duration="277000" />
+      <workItem from="1779858061354" duration="97000" />
+      <workItem from="1779858198818" duration="913000" />
+      <workItem from="1779859146576" duration="182000" />
+      <workItem from="1779859359240" duration="4838000" />
+      <workItem from="1779902628523" duration="6589000" />
+      <workItem from="1779917555047" duration="10069000" />
     </task>
     <task id="LOCAL-00001" summary="push">
       <option name="closed" value="true" />
@@ -328,11 +400,30 @@
       <option name="project" value="LOCAL" />
       <updated>1779563701564</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Conexion modulo 1">
+      <option name="closed" value="true" />
+      <created>1779565032881</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1779565032881</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

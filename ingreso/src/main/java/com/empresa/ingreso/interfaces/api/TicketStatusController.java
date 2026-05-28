@@ -1,6 +1,7 @@
 package com.empresa.ingreso.interfaces.api;
 
 import com.empresa.ingreso.application.port.in.GetTicketStatusCommand;
+import com.empresa.ingreso.application.port.in.GetTicketStatusResult;
 import com.empresa.ingreso.application.port.in.GetTicketStatusUseCase;
 import com.empresa.ingreso.interfaces.api.dto.GetTicketStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +30,7 @@ public class TicketStatusController {
     @GetMapping("/{ticketCode}/status")
     @Operation(
             summary = "Consultar estado del ticket",
-            description = "Retorna el estado operativo del ticket y el ultimo contexto de acceso conocido."
+            description = "Retorna el estado operativo del ticket y el ultimo contexto de acceso conocido, enriquecido con información del evento."
     )
     @ApiResponses({
             @ApiResponse(
@@ -41,13 +42,16 @@ public class TicketStatusController {
                             examples = @ExampleObject(value = """
                                     {
                                       "status": "OK",
-                                      "message": "Estado consultado",
+                                      "message": "Ticket valido - no utilizado",
                                       "errorCode": null,
-                                      "ticketStatus": "ENTERED",
-                                      "ticketCode": "TK-1001",
-                                      "sessionId": 42,
-                                      "gateId": 7,
-                                      "entryAt": "2026-05-09T10:00:00Z"
+                                      "ticketStatus": "ACTIVE",
+                                      "ticketCode": "TICKET-ACTIVE-NORTH",
+                                      "eventId": "d5f9fd7e-3ac7-46eb-ba63-712e8e48abd3",
+                                      "eventName": "Clase Diseño Organizacional",
+                                      "recintoName": "Edificio Principal",
+                                      "zoneName": "NORTE",
+                                      "gateId": null,
+                                      "entryAt": null
                                     }
                                     """)
                     )
@@ -57,7 +61,22 @@ public class TicketStatusController {
     public ResponseEntity<GetTicketStatusResponse> getStatus(
             @Parameter(description = "Codigo unico del ticket") @PathVariable String ticketCode,
             @Parameter(description = "Identificador opcional de auditoria de la consulta") @RequestHeader(value = "X-Requested-By", required = false) String requestedBy) {
-        var result = getTicketStatusUseCase.execute(new GetTicketStatusCommand(ticketCode, requestedBy));
-        return ResponseEntity.ok(new GetTicketStatusResponse(result.status(), result.message(), result.errorCode(), result.ticketStatus(), result.ticketCode(), result.sessionId(), result.gateId(), result.entryAt()));
+        GetTicketStatusResult result = getTicketStatusUseCase.execute(new GetTicketStatusCommand(ticketCode, requestedBy));
+        
+        GetTicketStatusResponse response = new GetTicketStatusResponse(
+                result.status(),
+                result.message(),
+                result.errorCode(),
+                result.ticketStatus(),
+                result.ticketCode(),
+                result.eventId(),
+                result.eventName(),
+                result.recintoName(),
+                result.zoneName(),
+                result.gateId(),
+                result.entryAt()
+        );
+        
+        return ResponseEntity.ok(response);
     }
 }

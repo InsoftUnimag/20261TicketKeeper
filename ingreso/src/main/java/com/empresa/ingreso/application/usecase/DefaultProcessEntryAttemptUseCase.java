@@ -3,15 +3,14 @@ package com.empresa.ingreso.application.usecase;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptCommand;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptResult;
 import com.empresa.ingreso.application.port.in.ProcessEntryAttemptUseCase;
-import com.empresa.ingreso.application.port.out.LoadEventSessionPort;
 import com.empresa.ingreso.application.port.out.LoadReaderDevicePort;
 import com.empresa.ingreso.application.port.out.LoadTicketPort;
+import com.empresa.ingreso.application.port.out.Modulo1Port;
 import com.empresa.ingreso.application.port.out.SaveAccessAttemptPort;
 import com.empresa.ingreso.application.port.out.SaveEntryRecordPort;
 import com.empresa.ingreso.application.port.out.SaveTicketPort;
 import com.empresa.ingreso.domain.model.AccessAttempt;
 import com.empresa.ingreso.domain.model.EntryRecord;
-import com.empresa.ingreso.domain.model.EventSession;
 import com.empresa.ingreso.domain.model.ReaderDevice;
 import com.empresa.ingreso.domain.model.AccessType;
 import com.empresa.ingreso.domain.model.AttemptResult;
@@ -22,7 +21,6 @@ import com.empresa.ingreso.shared.errors.TechnicalException;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,47 +33,26 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
     private final LoadReaderDevicePort loadReaderDevicePort;
     private final LoadTicketPort loadTicketPort;
     private final SaveTicketPort saveTicketPort;
-    private final LoadEventSessionPort loadEventSessionPort;
+    private final Modulo1Port modulo1Port;
     private final SaveAccessAttemptPort saveAccessAttemptPort;
     private final SaveEntryRecordPort saveEntryRecordPort;
     private final Clock clock;
 
-    @Autowired
     public DefaultProcessEntryAttemptUseCase(
             LoadReaderDevicePort loadReaderDevicePort,
             LoadTicketPort loadTicketPort,
             SaveTicketPort saveTicketPort,
-            LoadEventSessionPort loadEventSessionPort,
+            Modulo1Port modulo1Port,
             SaveAccessAttemptPort saveAccessAttemptPort,
             SaveEntryRecordPort saveEntryRecordPort
-    ) {
-        this(
-                loadReaderDevicePort,
-                loadTicketPort,
-                saveTicketPort,
-                loadEventSessionPort,
-                saveAccessAttemptPort,
-                saveEntryRecordPort,
-                Clock.systemUTC()
-        );
-    }
-
-    DefaultProcessEntryAttemptUseCase(
-            LoadReaderDevicePort loadReaderDevicePort,
-            LoadTicketPort loadTicketPort,
-            SaveTicketPort saveTicketPort,
-            LoadEventSessionPort loadEventSessionPort,
-            SaveAccessAttemptPort saveAccessAttemptPort,
-            SaveEntryRecordPort saveEntryRecordPort,
-            Clock clock
     ) {
         this.loadReaderDevicePort = loadReaderDevicePort;
         this.loadTicketPort = loadTicketPort;
         this.saveTicketPort = saveTicketPort;
-        this.loadEventSessionPort = loadEventSessionPort;
+        this.modulo1Port = modulo1Port;
         this.saveAccessAttemptPort = saveAccessAttemptPort;
         this.saveEntryRecordPort = saveEntryRecordPort;
-        this.clock = clock;
+        this.clock = Clock.systemUTC();
     }
 
     @Override
@@ -84,12 +61,11 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
         OffsetDateTime now = OffsetDateTime.now(clock);
 
         try {
-            Optional<ReaderDevice> maybeReader = validateReader(command);
-            if (maybeReader.isEmpty()) {
+            // La validación del lector sigue siendo útil para saber que el dispositivo físico existe y está habilitado.
+            if (loadReaderDevicePort.findReaderDeviceById(command.readerId()).filter(ReaderDevice::enabled).isEmpty()) {
                 AccessAttempt attempt = persistAttempt(now, command, null, AttemptResult.REJECTED, ErrorCode.LECTOR_NO_CONFIGURADO);
-                return Optional.of(rejected("Reader device is not configured", ErrorCode.LECTOR_NO_CONFIGURADO, attempt.id()));
+                return Optional.of(rejected("Reader device is not configured or disabled", ErrorCode.LECTOR_NO_CONFIGURADO, attempt.id()));
             }
-            ReaderDevice reader = maybeReader.get();
 
             Optional<Ticket> maybeTicket = loadTicketPort.findByCodeForUpdate(command.ticketCode());
             if (maybeTicket.isEmpty()) {
@@ -113,9 +89,10 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
                 return Optional.of(rejected("Event session is invalid", ErrorCode.SESION_INVALIDA, attempt.id()));
             }
 
-            if (!validateZone(reader, ticket)) {
+            // Lógica de validación de zona CORREGIDA
+            if (!validateZone(command, ticket)) {
                 AccessAttempt attempt = persistAttempt(now, command, ticket.id(), AttemptResult.REJECTED, ErrorCode.ZONA_INCORRECTA);
-                return Optional.of(rejected("Reader zone does not match ticket zone", ErrorCode.ZONA_INCORRECTA, attempt.id()));
+                return Optional.of(rejected("Configured zone does not match ticket zone", ErrorCode.ZONA_INCORRECTA, attempt.id()));
             }
 
             saveEntryRecordPort.save(new EntryRecord(
@@ -151,22 +128,21 @@ public class DefaultProcessEntryAttemptUseCase implements ProcessEntryAttemptUse
         }
     }
 
-    private Optional<ReaderDevice> validateReader(ProcessEntryAttemptCommand command) {
-        return loadReaderDevicePort.findReaderDeviceById(command.readerId())
-                .filter(ReaderDevice::enabled)
-                .filter(reader -> reader.gateId().equals(command.gateId()));
-    }
-
     private boolean validateSession(ProcessEntryAttemptCommand command, Ticket ticket) {
-        if (!ticket.sessionId().equals(command.sessionId())) {
+        if (ticket.sessionId() == null) {
             return false;
         }
-        Optional<EventSession> maybeSession = loadEventSessionPort.findEventSessionById(command.sessionId());
-        return maybeSession.filter(EventSession::active).isPresent();
+        // Comparación insensible a mayúsculas/minúsculas para UUIDs
+        return ticket.sessionId().equalsIgnoreCase(command.sessionId()) &&
+               modulo1Port.findActiveEventById(command.sessionId()).isPresent();
     }
 
-    private boolean validateZone(ReaderDevice reader, Ticket ticket) {
-        return ticket.allowedZone().equals(reader.assignedZone());
+    private boolean validateZone(ProcessEntryAttemptCommand command, Ticket ticket) {
+        if (ticket.allowedZone() == null || command.assignedZone() == null) {
+            return false;
+        }
+        // Comparación insensible a mayúsculas/minúsculas para las zonas
+        return ticket.allowedZone().equalsIgnoreCase(command.assignedZone());
     }
 
     private AccessAttempt persistAttempt(

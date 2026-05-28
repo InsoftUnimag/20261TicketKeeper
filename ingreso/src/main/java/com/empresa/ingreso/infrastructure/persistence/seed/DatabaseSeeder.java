@@ -5,17 +5,14 @@ import com.empresa.ingreso.domain.model.AttemptResult;
 import com.empresa.ingreso.domain.model.TicketStatus;
 import com.empresa.ingreso.infrastructure.persistence.entity.AccessAttemptEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.EntryRecordEntity;
-import com.empresa.ingreso.infrastructure.persistence.entity.EventSessionEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.GateAssignmentEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.ReaderDeviceEntity;
 import com.empresa.ingreso.infrastructure.persistence.entity.TicketEntity;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataAccessAttemptRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataEntryRecordRepository;
-import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataEventSessionRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataGateAssignmentRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataReaderDeviceRepository;
 import com.empresa.ingreso.infrastructure.persistence.repository.SpringDataTicketRepository;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -27,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @ConditionalOnProperty(value = "app.seed.enabled", havingValue = "true", matchIfMissing = true)
 public class DatabaseSeeder implements ApplicationRunner {
 
-    private final SpringDataEventSessionRepository eventSessionRepository;
     private final SpringDataReaderDeviceRepository readerDeviceRepository;
     private final SpringDataTicketRepository ticketRepository;
     private final SpringDataGateAssignmentRepository gateAssignmentRepository;
@@ -35,14 +31,12 @@ public class DatabaseSeeder implements ApplicationRunner {
     private final SpringDataAccessAttemptRepository accessAttemptRepository;
 
     public DatabaseSeeder(
-            SpringDataEventSessionRepository eventSessionRepository,
             SpringDataReaderDeviceRepository readerDeviceRepository,
             SpringDataTicketRepository ticketRepository,
             SpringDataGateAssignmentRepository gateAssignmentRepository,
             SpringDataEntryRecordRepository entryRecordRepository,
             SpringDataAccessAttemptRepository accessAttemptRepository
     ) {
-        this.eventSessionRepository = eventSessionRepository;
         this.readerDeviceRepository = readerDeviceRepository;
         this.ticketRepository = ticketRepository;
         this.gateAssignmentRepository = gateAssignmentRepository;
@@ -57,43 +51,36 @@ public class DatabaseSeeder implements ApplicationRunner {
             return;
         }
 
-        EventSessionEntity activeSession = saveSession(LocalDate.of(2026, 5, 10), true, 5000, 1250);
-        EventSessionEntity secondActiveSession = saveSession(LocalDate.of(2026, 5, 11), true, 3000, 420);
-        saveSession(LocalDate.of(2026, 5, 12), false, 2500, 0);
+        // Usamos UUIDs para simular los IDs de evento del Módulo 1
+        String activeSessionId = "d5f9fd7e-3ac7-46eb-ba63-712e8e48abd3";
+        String secondActiveSessionId = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
 
         ReaderDeviceEntity northReader = saveReader(101L, "NORTE", true);
         ReaderDeviceEntity southReader = saveReader(102L, "SUR", true);
-        saveReader(103L, "VIP", true);
+        ReaderDeviceEntity vipReader = saveReader(103L, "VIP", true);
+        ReaderDeviceEntity traseraReader = saveReader(105L, "Trasera", true);
         saveReader(104L, "NORTE", false);
 
-        saveGateAssignment(activeSession.getId(), northReader.getGateId(), "GENERAL", "NORTE", true);
-        saveGateAssignment(activeSession.getId(), southReader.getGateId(), "GENERAL", "SUR", true);
-        saveGateAssignment(activeSession.getId(), 103L, "VIP", "VIP", true);
-        saveGateAssignment(secondActiveSession.getId(), northReader.getGateId(), "GENERAL", "NORTE", true);
+        saveGateAssignment(activeSessionId, northReader.getGateId(), "GENERAL", "NORTE");
+        saveGateAssignment(activeSessionId, southReader.getGateId(), "GENERAL", "SUR");
+        saveGateAssignment(activeSessionId, vipReader.getGateId(), "VIP", "VIP");
+        saveGateAssignment(activeSessionId, traseraReader.getGateId(), "GENERAL", "Trasera");
+        saveGateAssignment(secondActiveSessionId, northReader.getGateId(), "GENERAL", "NORTE");
 
-        TicketEntity activeNorthTicket = saveTicket("TICKET-ACTIVE-NORTH", TicketStatus.ACTIVE, "GENERAL", "NORTE", activeSession.getId(), false);
-        TicketEntity activeSouthTicket = saveTicket("TICKET-ACTIVE-SOUTH", TicketStatus.ACTIVE, "GENERAL", "SUR", activeSession.getId(), false);
-        TicketEntity enteredTicket = saveTicket("TICKET-ENTERED", TicketStatus.ENTERED, "GENERAL", "NORTE", activeSession.getId(), true);
-        TicketEntity exitedTicket = saveTicket("TICKET-EXITED", TicketStatus.EXITED, "GENERAL", "NORTE", activeSession.getId(), true);
-        saveTicket("TICKET-CANCELED", TicketStatus.CANCELED, "GENERAL", "SUR", activeSession.getId(), false);
-        saveTicket("TICKET-BLOCKED", TicketStatus.BLOCKED, "VIP", "VIP", activeSession.getId(), false);
-        saveTicket("TICKET-SECOND-SESSION", TicketStatus.ACTIVE, "GENERAL", "NORTE", secondActiveSession.getId(), false);
+        TicketEntity activeNorthTicket = saveTicket("TICKET-ACTIVE-NORTH", TicketStatus.ACTIVE, "GENERAL", "NORTE", activeSessionId, false);
+        TicketEntity activeSouthTicket = saveTicket("TICKET-ACTIVE-SOUTH", TicketStatus.ACTIVE, "GENERAL", "SUR", activeSessionId, false);
+        TicketEntity enteredTicket = saveTicket("TICKET-ENTERED", TicketStatus.ENTERED, "GENERAL", "NORTE", activeSessionId, true);
+        TicketEntity exitedTicket = saveTicket("TICKET-EXITED", TicketStatus.EXITED, "GENERAL", "NORTE", activeSessionId, true);
+        saveTicket("TICKET-CANCELED", TicketStatus.CANCELED, "GENERAL", "SUR", activeSessionId, false);
+        saveTicket("TICKET-BLOCKED", TicketStatus.BLOCKED, "VIP", "VIP", activeSessionId, false);
+        saveTicket("TICKET-SECOND-SESSION", TicketStatus.ACTIVE, "GENERAL", "NORTE", secondActiveSessionId, false);
 
-        saveEntryRecord(enteredTicket.getId(), activeSession.getId(), northReader.getGateId(), AccessType.ENTRY, OffsetDateTime.parse("2026-05-10T16:00:00Z"));
-        saveEntryRecord(exitedTicket.getId(), activeSession.getId(), northReader.getGateId(), AccessType.ENTRY, OffsetDateTime.parse("2026-05-10T14:00:00Z"));
-        saveEntryRecord(exitedTicket.getId(), activeSession.getId(), northReader.getGateId(), AccessType.EXIT, OffsetDateTime.parse("2026-05-10T18:30:00Z"));
+        saveEntryRecord(enteredTicket.getId(), activeSessionId, northReader.getGateId(), AccessType.ENTRY, OffsetDateTime.parse("2026-05-10T16:00:00Z"));
+        saveEntryRecord(exitedTicket.getId(), activeSessionId, northReader.getGateId(), AccessType.ENTRY, OffsetDateTime.parse("2026-05-10T14:00:00Z"));
+        saveEntryRecord(exitedTicket.getId(), activeSessionId, northReader.getGateId(), AccessType.EXIT, OffsetDateTime.parse("2026-05-10T18:30:00Z"));
 
-        saveApprovedAttempt(activeNorthTicket.getId(), activeNorthTicket.getCode(), northReader.getId(), northReader.getGateId(), activeSession.getId(), OffsetDateTime.parse("2026-05-10T12:00:00Z"));
-        saveApprovedAttempt(activeSouthTicket.getId(), activeSouthTicket.getCode(), southReader.getId(), southReader.getGateId(), activeSession.getId(), OffsetDateTime.parse("2026-05-10T12:05:00Z"));
-    }
-
-    private EventSessionEntity saveSession(LocalDate eventDate, boolean active, Integer maxCapacity, Integer currentOccupancy) {
-        EventSessionEntity session = new EventSessionEntity();
-        session.setEventDate(eventDate);
-        session.setActive(active);
-        session.setMaxCapacity(maxCapacity);
-        session.setCurrentOccupancy(currentOccupancy);
-        return eventSessionRepository.save(session);
+        saveApprovedAttempt(activeNorthTicket.getId(), activeNorthTicket.getCode(), northReader.getId(), northReader.getGateId(), activeSessionId, OffsetDateTime.parse("2026-05-10T12:00:00Z"));
+        saveApprovedAttempt(activeSouthTicket.getId(), activeSouthTicket.getCode(), southReader.getId(), southReader.getGateId(), activeSessionId, OffsetDateTime.parse("2026-05-10T12:05:00Z"));
     }
 
     private ReaderDeviceEntity saveReader(Long gateId, String zone, boolean enabled) {
@@ -104,17 +91,17 @@ public class DatabaseSeeder implements ApplicationRunner {
         return readerDeviceRepository.save(reader);
     }
 
-    private GateAssignmentEntity saveGateAssignment(Long sessionId, Long gateId, String category, String zone, boolean active) {
+    private void saveGateAssignment(String sessionId, Long gateId, String category, String zone) {
         GateAssignmentEntity assignment = new GateAssignmentEntity();
         assignment.setSessionId(sessionId);
         assignment.setGateId(gateId);
         assignment.setTicketCategory(category);
         assignment.setZone(zone);
-        assignment.setActive(active);
-        return gateAssignmentRepository.save(assignment);
+        assignment.setActive(true);
+        gateAssignmentRepository.save(assignment);
     }
 
-    private TicketEntity saveTicket(String code, TicketStatus status, String category, String allowedZone, Long sessionId, boolean used) {
+    private TicketEntity saveTicket(String code, TicketStatus status, String category, String allowedZone, String sessionId, boolean used) {
         TicketEntity ticket = new TicketEntity();
         ticket.setCode(code);
         ticket.setStatus(status);
@@ -125,22 +112,22 @@ public class DatabaseSeeder implements ApplicationRunner {
         return ticketRepository.save(ticket);
     }
 
-    private EntryRecordEntity saveEntryRecord(Long ticketId, Long eventId, Long gateId, AccessType accessType, OffsetDateTime enteredAt) {
+    private void saveEntryRecord(Long ticketId, String eventId, Long gateId, AccessType accessType, OffsetDateTime enteredAt) {
         EntryRecordEntity entryRecord = new EntryRecordEntity();
         entryRecord.setTicketId(ticketId);
         entryRecord.setEventId(eventId);
         entryRecord.setGateId(gateId);
         entryRecord.setAccessType(accessType);
         entryRecord.setEnteredAt(enteredAt);
-        return entryRecordRepository.save(entryRecord);
+        entryRecordRepository.save(entryRecord);
     }
 
-    private AccessAttemptEntity saveApprovedAttempt(
+    private void saveApprovedAttempt(
             Long ticketId,
             String enteredTicketCode,
             Long readerId,
             Long gateId,
-            Long sessionId,
+            String sessionId,
             OffsetDateTime attemptedAt
     ) {
         AccessAttemptEntity attempt = new AccessAttemptEntity();
@@ -153,6 +140,6 @@ public class DatabaseSeeder implements ApplicationRunner {
         attempt.setResult(AttemptResult.APPROVED);
         attempt.setErrorCode(null);
         attempt.setAttemptedAt(attemptedAt);
-        return accessAttemptRepository.save(attempt);
+        accessAttemptRepository.save(attempt);
     }
 }

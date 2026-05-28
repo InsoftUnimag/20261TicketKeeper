@@ -15,7 +15,6 @@ import com.empresa.ingreso.domain.model.Ticket;
 import com.empresa.ingreso.shared.errors.ErrorCode;
 import java.time.Clock;
 import java.time.OffsetDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +26,12 @@ public class DefaultRegisterExitUseCase implements RegisterExitUseCase {
     private final SaveEntryRecordPort saveEntryRecordPort;
     private final Clock clock;
 
-    @Autowired
     public DefaultRegisterExitUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort) {
-        this(modulo1TicketImportService, saveTicketPort, saveAccessAttemptPort, saveEntryRecordPort, Clock.systemUTC());
-    }
-
-    DefaultRegisterExitUseCase(Modulo1TicketImportService modulo1TicketImportService, SaveTicketPort saveTicketPort, SaveAccessAttemptPort saveAccessAttemptPort, SaveEntryRecordPort saveEntryRecordPort, Clock clock) {
-        this.modulo1TicketImportService = modulo1TicketImportService; this.saveTicketPort = saveTicketPort; this.saveAccessAttemptPort = saveAccessAttemptPort; this.saveEntryRecordPort = saveEntryRecordPort; this.clock = clock;
+        this.modulo1TicketImportService = modulo1TicketImportService;
+        this.saveTicketPort = saveTicketPort;
+        this.saveAccessAttemptPort = saveAccessAttemptPort;
+        this.saveEntryRecordPort = saveEntryRecordPort;
+        this.clock = Clock.systemUTC();
     }
 
     @Override

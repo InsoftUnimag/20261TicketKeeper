@@ -2,7 +2,7 @@ package com.empresa.ingreso.domain.model;
 
 public record GateAssignment(
         Long id,
-        Long sessionId,
+        String sessionId,
         Long gateId,
         String ticketCategory,
         String zone,
@@ -10,7 +10,7 @@ public record GateAssignment(
 ) {
     public GateAssignment {
         if (id != null && id <= 0) throw new IllegalArgumentException("id must be greater than zero");
-        validatePositive(sessionId, "sessionId");
+        requireText(sessionId, "sessionId");
         validatePositive(gateId, "gateId");
         requireText(ticketCategory, "ticketCategory");
         requireText(zone, "zone");
